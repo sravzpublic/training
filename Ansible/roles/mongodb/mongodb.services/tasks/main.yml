@@ -1,0 +1,6 @@
+---
+  - include: copy_systemd_service_files.yml
+    when: touch_mongod_service or touch_mongoc_service or touch_mongos_service
+  - include: touch_services.yml
+    when: touch_mongod_service or touch_mongoc_service or touch_mongos_service
+  

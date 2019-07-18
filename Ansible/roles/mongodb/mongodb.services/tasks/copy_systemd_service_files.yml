@@ -1,0 +1,49 @@
+#- name: Set directory ownership
+#  become: true
+#  file: dest={{item}} owner=mongod group=mongod state=directory recurse=yes
+#  with_items:
+#  - /var/log/mongodb
+#  - /var/run/mongo
+#  - /etc/mongodb/
+#  when: create_mongod_service_directories
+    
+### Copy service files    
+- name: Copy systemd service file
+  become: true
+  template:
+    src: mongod.service.j2
+    dest: /etc/systemd/system/mongod@.service
+    owner: root
+    group: root
+    mode: 644
+  when: touch_mongod_service
+
+- name: Copy systemd service file
+  become: true
+  template:
+    src: mongoc.service.j2
+    dest: /etc/systemd/system/mongoc@.service
+    owner: root
+    group: root
+    mode: 644
+  when: touch_mongoc_service
+
+- name: Copy systemd service file
+  become: true
+  template:
+    src: mongos.service.j2
+    dest: /etc/systemd/system/mongos@.service
+    owner: root
+    group: root
+    mode: 644
+  when: touch_mongos_service
+
+### Reload systemd
+- name: Reload systemd
+  become: true
+  command: systemctl daemon-reload
+  when: touch_mongod_service or touch_mongoc_service or touch_mongos_service
+  
+
+
+  

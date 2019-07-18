@@ -1,0 +1,15 @@
+---
+add_admin_to_config_server: False
+add_admin_to_db_server: False
+remove_admin_to_config_server: False
+remove_admin_to_db_server: False
+grant_user_role_on_database: False
+useradmin_readonly: False
+create_user_in_database: False
+# Pause
+pause_for_minutes_before_starting: 1
+pause_for_minutes_after_finishing: 1
+user_roles_on_database: []
+user_names: []
+users_to_drop: []
+mongos_port: 26000

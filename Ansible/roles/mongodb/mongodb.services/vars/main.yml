@@ -1,0 +1,6 @@
+---
+#create_mongod_service_directories: False
+touch_mongod_service: False
+touch_mongoc_service: False
+touch_mongos_service: False
+pause_for_minutes_after_finishing: 1

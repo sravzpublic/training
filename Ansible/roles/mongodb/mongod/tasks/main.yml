@@ -1,0 +1,34 @@
+---
+# This role deploys the mongod processes and sets up the replication set.
+
+- name: create /etc/mongodb directory
+  become: true
+  file: path=/etc/mongodb state=directory
+
+- name: create log directory for mongodb
+  become: true
+  file: path=/var/log/mongodb state=directory owner=mongod group=mongod
+
+- name: create run directory for mongodb
+  become: true
+  file: path=/var/run/mongo state=directory owner=mongod group=mongod
+
+- name: create data directory for mongodb
+  become: true
+  file: path={{item.mongodb_datadir_prefix}}/mongo-{{item.instance_name}} state=directory owner=mongod group=mongod
+  with_items: "{{mongodb_config_items.instances}}"   
+
+- name: Create the mongodb configuration file
+  become: true
+  template: src=mongod.conf.j2 dest=/etc/mongodb/mongod-{{ item.instance_name }}.conf
+  with_items: "{{mongodb_config_items.instances}}"  
+
+- name: Copy the keyfile for authentication
+  become: true
+  copy: src=secret dest={{ item.mongodb_datadir_prefix }}/mongo-{{ item.instance_name }}/secret owner=mongod group=mongod mode=0400
+  with_items: "{{mongodb_config_items.instances}}"  
+
+- name: Copy pem file
+  become: true
+  copy: src=mongodb.pem dest=/etc/mongodb/mongodb.pem owner=mongod group=mongod mode=0400
+  

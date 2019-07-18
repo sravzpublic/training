@@ -1,0 +1,12 @@
+rs.initiate(
+   {
+      _id: "{{item.name}}",
+      version: 1,
+      members: [
+		{% for node in item.nodes %}
+		{ _id: {{loop.index}}, host : "{{ node.mongod_host }}:{{ node.mongod_port }}", priority: {{ node.priority }} },
+		{% endfor %}
+      ]
+   }
+)
+printjson(rs.status())

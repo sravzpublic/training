@@ -1,0 +1,174 @@
+ansible_user: vagrant
+ansible_ssh_pass: vagrant
+# Copy these variables to ansible vault
+mongo_admin_pass: changeme
+mongo_sravz_pass: changeme
+mongo_sravz_reader_pass: changeme
+
+# The chunksize for shards in MB
+mongos_chunk_size: 1
+# The port in which mongos server should listen on
+mongos_port: 8888
+# The port for mongo config server
+mongoc_port: 7777
+# The directory prefix where the database files would be stored
+mongodb_datadir_prefix: /data/
+# The interface where the mongodb process should listen on.
+# Defaults to the first interface. Change this to:
+#
+#  iface: eth1
+#
+# ...to override.
+#
+iface: '{{ ansible_default_ipv4.interface }}'
+# The password for admin user
+touch_mongod_service: False
+touch_mongoc_service: False
+vagrant_mongo_host: vagrant
+
+mongodb_config_items:
+  instances:
+#Shard1#Set1
+    -
+      mongod_port: 27000
+      mongodb_datadir_prefix: /data/server1
+      instance_name: server1
+      instance_id: 1
+      replica_set: replica_set1
+    -
+      mongod_port: 27001
+      mongodb_datadir_prefix: /data/server2
+      instance_name: server2
+      instance_id: 2
+      replica_set: replica_set1
+    -
+      mongod_port: 27002
+      mongodb_datadir_prefix: /data/server3
+      instance_name: server3
+      instance_id: 3
+      replica_set: replica_set1
+# To Add Shard: Step 1: Define 3 replicaton nodes
+#Shard2#Set2
+    -
+      mongod_port: 27005
+      mongodb_datadir_prefix: /data/server4
+      instance_name: server4
+      instance_id: 4
+      replica_set: replica_set2
+    -
+      mongod_port: 27006
+      mongodb_datadir_prefix: /data/server5
+      instance_name: server5
+      instance_id: 5
+      replica_set: replica_set2
+    -
+      mongod_port: 27007
+      mongodb_datadir_prefix: /data/server6
+      instance_name: server6
+      instance_id: 6
+      replica_set: replica_set2
+  replica_sets:
+    -
+      name: replica_set1
+      primary:
+        mongod_port: 27000
+        hostname: vagrant
+      nodes:
+        -
+          mongod_host: vagrant
+          mongod_port: 27000
+          priority: 100
+        -
+          mongod_host: vagrant
+          mongod_port: 27001
+          priority: 99
+        -
+          mongod_host: vagrant
+          mongod_port: 27002
+          priority: 98
+# To Add Shard: Step 2: Define replication setup
+    -
+      name: replica_set2
+      primary:
+        mongod_port: 27005
+        hostname: vagrant
+      nodes:
+        -
+          mongod_host: vagrant
+          mongod_port: 27005
+          priority: 100
+        -
+          mongod_host: vagrant
+          mongod_port: 27006
+          priority: 99
+        -
+          mongod_host: vagrant
+          mongod_port: 27007
+          priority: 98
+  mongoc_instances:
+    -
+      mongoc_port: 28000
+      mongodb_datadir_prefix: /data/configdb1
+      instance_name: mongoc1
+      instance_id: 1
+      replica_set: replica_set_mongoc1
+    -
+      mongoc_port: 28001
+      mongodb_datadir_prefix: /data/configdb2
+      instance_name: mongoc2
+      instance_id: 2
+      replica_set: replica_set_mongoc1
+    -
+      mongoc_port: 28002
+      mongodb_datadir_prefix: /data/configdb3
+      instance_name: mongoc3
+      instance_id: 3
+      replica_set: replica_set_mongoc1
+  mongoc_replica_sets:
+    -
+      name: replica_set_mongoc1
+      primary:
+        mongod_port: 28000
+        hostname: vagrant
+      nodes:
+        -
+          mongod_host: vagrant
+          mongod_port: 28000
+          priority: 100
+        -
+          mongod_host: vagrant
+          mongod_port: 28001
+          priority: 99
+        -
+          mongod_host: vagrant
+          mongod_port: 28002
+          priority: 98
+  mongos_instances:
+    -
+      mongos_port: 26000
+      mongodb_datadir_prefix: /data/mongos1
+      instance_name: mongos1
+      instance_id: 1
+      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+    -
+      mongos_port: 26001
+      mongodb_datadir_prefix: /data/mongos2
+      instance_name: mongos2
+      instance_id: 2
+      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+    -
+      mongos_port: 26002
+      mongodb_datadir_prefix: /data/mongos3
+      instance_name: mongos3
+      instance_id: 3
+      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+  mongos_shards:
+    -
+      mongos_port: 26000
+      name: replica_set1
+      primary_host_port: "vagrant:27000"
+# To Add Shard: Step 3: Add shard in mongos server
+    -
+      mongos_port: 26000
+      name: replica_set2
+      primary_host_port: "vagrant:27005"

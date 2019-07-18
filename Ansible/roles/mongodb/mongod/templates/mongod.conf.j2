@@ -1,0 +1,51 @@
+# mongod.conf
+# for documentation of all options, see:
+#   http://docs.mongodb.org/manual/reference/configuration-options/
+
+# where to write logging data.
+systemLog:
+  destination: file
+  logAppend: true
+  path: /var/log/mongodb/mongod-{{ item.instance_name }}.log
+
+# Where and how to store data.
+storage:
+  dbPath: {{ item.mongodb_datadir_prefix }}/mongo-{{ item.instance_name }}
+  journal:
+    enabled: true
+#  engine:
+#  mmapv1:
+  wiredTiger:
+    engineConfig:
+      directoryForIndexes: true
+
+# how the process runs
+processManagement:
+  fork: true  # fork and run in background
+  pidFilePath: /var/run/mongo/mongod-{{ item.instance_name }}.pid  # location of pidfile
+
+# network interfaces
+net:
+  port: {{ item.mongod_port }}
+  ssl:
+    mode: preferSSL
+    PEMKeyFile: /etc/mongodb/mongodb.pem
+
+security:
+   keyFile: {{ item.mongodb_datadir_prefix }}/mongo-{{ item.instance_name }}/secret
+
+#operationProfiling:
+
+replication:
+   replSetName: {{ item.replica_set }}
+   
+#replication:
+
+sharding:
+   clusterRole: shardsvr
+
+## Enterprise-Only Options
+
+#auditLog:
+
+#snmp:

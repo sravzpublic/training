@@ -1,0 +1,50 @@
+---
+### Write operations ###
+#### Should be the first task
+- name: Pause for any pending replication
+  pause:
+    minutes: "{{pause_for_minutes_before_starting}}"
+  when: not useradmin_readonly 
+
+### Add admin user to config/db servers
+- name: add admin user to config server
+  include: admin_user_only.yml
+
+### create user in database
+- name: create user in database
+  raw: >
+    mongo {{item.database}}  --port {{ mongos_port }} -u admin -p "{{mongo_admin_pass}}" --authenticationDatabase admin --eval "db.createUser({user: \"{{item.user}}\", pwd: \"{{item.password}}\", roles: [{ role: \"{{item.role}}\", db: \"{{item.database}}\" }]})"
+  tags:
+    - create_user   
+  with_items: "{{ user_roles_on_database }}"       
+  when: create_user_in_database  
+
+### grant role to user on database
+- name: grant role to user on database
+  raw: >
+    mongo {{item.user_database}}  --port {{ mongos_port }} -u admin -p "{{mongo_admin_pass}}" --authenticationDatabase admin --eval "db.grantRolesToUser(\"{{item.user}}\", [{ role: \"{{item.role}}\", db: \"{{item.database}}\" }])"
+  tags:
+    - add_user_roles   
+  with_items: "{{ user_roles_on_database }}"       
+  when: grant_user_role_on_database  
+  
+### Remove user
+- name: remove user
+  raw: >
+    mongo {{ item.user_database }} --port {{ mongos_port }} -u admin -p "{{mongo_admin_pass}}" --authenticationDatabase admin --eval "db.dropUser(\"{{item.username}}\")"
+  tags:
+    - drop_users   
+  with_items: "{{ users_to_drop }}"       
+  when: drop_users  
+
+  
+#### Should be the last task
+- name: Pause for any pending replication
+  pause:
+    minutes: "{{pause_for_minutes_after_finishing}}"  
+  when: not useradmin_readonly
+  
+### Read only operations ###  
+- name: read only operations
+  include: read_only_operations.yml
+  

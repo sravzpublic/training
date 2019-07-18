@@ -1,0 +1,118 @@
+---
+# This Playbook would deploy the whole mongodb cluster with replication and sharding.
+
+- hosts: sravzmongodb
+  roles:
+  - {role: mongodb.common, "setup_system": True, "install_packages": True }
+  - role: mongoc
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongoc_service: True}
+  - {role: replicaset, touch_mongoc_service: True}
+  - role: mongod
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongod_service: True}
+  - {role: replicaset, touch_mongod_service: True}
+  - role: mongos
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongos_service: True}
+  tags:
+    - install_mongodb
+
+
+# Add a shard replica set, after this task, run Enable Sharding task below
+- hosts: sravzmongodb
+  roles:
+  - role: mongod
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongod_service: True}
+  - {role: replicaset, touch_mongod_service: True}
+  tags:
+    - add_shard
+
+# Add admin user on config server
+- hosts: sravzmongodb
+  roles:
+# Disable authentication
+  - {role: mongoc, "mongodb_security_authorization": disabled }
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongoc_service: True}
+# Add admin user
+  - {role: mongodb.useradmin, add_admin_to_config_server: True}
+# Enable authentication
+  - {role: mongoc, "mongodb_security_authorization": enabled }
+  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongoc_service: True}
+  tags:
+    - add_admin_user
+
+# Enable sharding, run this after running above task. Deploy a sharded replica
+- hosts: sravzmongodb
+  roles:
+  - { role: mongodb.shards, add_mongodb_shards: True }
+  tags:
+    - enable_sharding
+
+
+# Preseed
+- hosts: sravzmongodb
+  roles:
+# Can add only one role at a time
+   - {role: mongodb.useradmin, create_user_in_database: True, user_roles_on_database:
+   [
+   {user: "sravz", password: "{{mongo_sravz_pass}}", role: "dbAdmin", database: "sravz"},
+   {user: "sravz_reader", password: "{{mongo_sravz_reader_pass}}", role: "read", database: "sravz"},
+   {user: "sravz_historical", password: "{{mongo_sravz_pass}}", role: "dbAdmin", database: "sravz_historical"},
+   {user: "sravz_historical_reader", password: "{{mongo_sravz_reader_pass}}", role: "read", database: "sravz_historical"},
+
+   ]
+  }
+   - {role: mongodb.useradmin, grant_user_role_on_database: True, user_roles_on_database:
+   [
+   {user: "sravz", password: "{{mongo_sravz_pass}}", role: "readWrite", database: "sravz", user_database: "sravz"},
+   {user: "sravz_reader", password: "{{mongo_sravz_reader_pass}}", role: "read", database: "sravz", user_database: "sravz"},
+   {user: "sravz_historical", password: "{{mongo_sravz_pass}}", role: "readWrite", database: "sravz_historical", user_database: "sravz_historical"},
+   {user: "sravz_historical_reader", password: "{{mongo_sravz_reader_pass}}", role: "read", database: "sravz_historical", user_database: "sravz_historical"},
+   # Added this since Robomongo does not show all databases. Connect as admin in Robomongo
+   {user: "admin", password: "{{mongo_admin_pass}}", role: "readWrite", database: "sravz", user_database: "admin"},
+   {user: "admin", password: "{{mongo_admin_pass}}", role: "readWrite", database: "sravz_historical", user_database: "admin"}
+   ]
+  }
+   - { role: mongodb.shards, enable_mongodb_db_sharding: True, mongodb_dbs_to_enable_sharding: [
+      { user: "admin",  password : "{{mongo_admin_pass}}", database: "sravz"},
+      { user: "admin",  password : "{{mongo_admin_pass}}", database: "sravz_historical"}
+   ] }
+  tags:
+    - preseed
+    - create_databases
+    - add_user_roles
+
+# Quick commands
+#- hosts: sravzmongodb
+#  roles:
+#   - {role: mongodb.useradmin, drop_users: True, users_to_drop: [
+#   { username: "sravz", user_database: "sravz"},
+#   { username: "sravz_reader", user_database: "sravz"}
+#   ] }
+#  tags:
+#    - drop_users
+
+# Perform mongodb setup/common tasks
+#- hosts: sravzmongodb
+#  roles:
+#  - {role: mongodb.common, "setup_system": True}
+#  tags:
+#    - mongodb_setup_common_task
+
+#- hosts: sravzmongodb
+#  roles:
+#  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongoc_service: True}
+#  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongod_service: True}
+#  - {role: mongodb.services, "systemd_service_action": restarted, touch_mongos_service: True}
+#  tags:
+#    - restart_services
+
+# Verification
+- hosts: sravzmongodb
+  roles:
+  - {role: mongodb.useradmin, get_user_roles: True, useradmin_readonly: True, user_names: ['admin'] }
+  - { role: mongodb.shards, get_shard_status: True, shards_readonly: True }
+  tags:
+    - verify
+    - get_user_roles
+    - get_shard_status
+
+
