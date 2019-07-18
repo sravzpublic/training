@@ -1,7 +1,7 @@
 # Training
 Sravz Training Material
 
-Directories:
+Directories:<br/>
 Vagrant: Contains Sravz Node Vagrant file<br/>
 Ansible: Contains Sravz Node Ansible roles
 
@@ -9,8 +9,10 @@ Steps:
 1) Spin up a vagrant based Ubuntu 18.04 machine for development<br/>
 a. Ensure vagrant and virtualbox are installed<br/>
 b. cd ../training/Vagrant directory<br/>
-c. vagrant up<br/>
-d. vagrant ssh<br/>
+```
+vagrant up
+vagrant ssh
+```
 e. verify ansible works<br/>
 ```
     vagrant@vagrant:~/training/Ansible$ ansible vagrant -m ping
@@ -40,7 +42,7 @@ Installation Steps:<br/>
 2) cd ~/training/Anisble directory
 3) run mongodb playbook<br/>
 ```
-   ansible-playbook -v playbooks/mongodb.yml<br/>
+   ansible-playbook -v playbooks/mongodb.yml
 ```
 
 4) Verify shard status
@@ -82,7 +84,7 @@ MongoDB server version: 4.0.10
         {  "_id" : "sravz",  "primary" : "replica_set2",  "partitioned" : true,  "version" : {  "uuid" : UUID("cf10bbb1-f809-4f68-9632-e7f9c0604354"),  "lastMod" : 1 } }
         {  "_id" : "sravz_historical",  "primary" : "replica_set2",  "partitioned" : true,  "version" : {  "uuid" : UUID("4353a2d6-14d3-4c89-bea9-fd021c1f6f44"),  "lastMod" : 1 } }
 ```
-5) To connect to mnogodb:
+5) To connect to mongodb:
 ```
 $ mongo -u admin -p changeme 127.0.0.1:26000/admin
 MongoDB shell version v4.0.10
