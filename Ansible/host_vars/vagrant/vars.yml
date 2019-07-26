@@ -1,27 +1,11 @@
 ansible_user: vagrant
 ansible_ssh_pass: vagrant
-full_hostname: vagrant.sravz.com
+full_hostname: vagrant.vm
 short_hostname: vagrant
 # Copy these variables to ansible vault
 mongo_admin_pass: changeme
 mongo_sravz_pass: changeme
 mongo_sravz_reader_pass: changeme
-
-################ Start: Kafka Variables ##################
-zookeeper_config_items:
-  -
-    config_key: server.1
-    config_value: "server.1=192.168.56.2:2888:3888"
-  -
-    config_key: autopurge.snapRetainCount
-    config_value: autopurge.snapRetailCount=10
-  -
-    config_key: autopurge.purgeInterval
-    config_value: autopurge.purgeInterval=12
-zookeeper_id: 1
-# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in Vagrant file
-zookeeper_ip: 192.168.56.4
-################ End: Kafka Variables ####################
 
 ################ Start: MongoDB Variables ################
 # The chunksize for shards in MB
@@ -192,3 +176,23 @@ mongodb_config_items:
       name: replica_set2
       primary_host_port: "vagrant:27005"
 ################ End: MongoDB Variables ####################
+
+################ Start: Zookeeper Variables ##################
+zookeeper_config_items:
+  -
+    config_key: server.1
+    config_value: "server.1=192.168.56.2:2888:3888"
+  -
+    config_key: autopurge.snapRetainCount
+    config_value: autopurge.snapRetailCount=10
+  -
+    config_key: autopurge.purgeInterval
+    config_value: autopurge.purgeInterval=12
+zookeeper_id: 1
+# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in Vagrant file
+zookeeper_ip: 192.168.56.4
+################ End: Zookeeper Variables ####################
+
+################ Start: Kafka Variables ##################
+kafka_advertised_host_name: "{{full_hostname}}"
+################ End: Kafka Variables ####################

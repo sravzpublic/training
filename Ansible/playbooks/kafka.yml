@@ -1,0 +1,4 @@
+---
+- hosts: sravzkafka
+  roles:
+     - { role: kafka }
