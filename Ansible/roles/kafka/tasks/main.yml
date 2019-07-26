@@ -1,0 +1,10 @@
+---
+- name: Install Kafka from src
+  include: build.yml
+  tags:
+    - kafka_build
+
+- name: Configure Kafka
+  include: configure.yml
+  tags:
+    - kafka_configure
