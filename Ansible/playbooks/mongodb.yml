@@ -1,7 +1,7 @@
 ---
 # This Playbook would deploy the whole mongodb cluster with replication and sharding.
 
-- hosts: sravzmongodb
+- hosts: sravzzookeeper
   roles:
   - {role: mongodb.common, "setup_system": True, "install_packages": True }
   - role: mongoc

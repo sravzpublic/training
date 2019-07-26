@@ -1,0 +1,49 @@
+---
+- name: Update apt
+  become: yes
+  apt:
+    cache_valid_time: 1800
+    update_cache: yes
+  tags:
+    - build
+    - apt
+    - apt-update
+
+
+- name: Install Zookeeper supporting packages
+  become: yes
+  apt:
+    name: ['openjdk-8-jre', 'zookeeper', 'zookeeperd']
+  tags:
+    - build
+
+- name: Update the zookeeper ID
+  become: yes
+  lineinfile:
+    dest: /var/lib/zookeeper/myid
+    backup: no
+#    create: yes
+    line: "{{zookeeper_id}}"
+    owner: zookeeper
+    group: zookeeper
+    mode: 0644
+  tags:
+    - build
+
+
+- name: Update conf file
+  become: yes
+  lineinfile:
+    dest: /etc/zookeeper/conf/zoo.cfg
+    regexp: "{{ item.config_key }}"
+    line: "{{ item.config_value }}"
+    backup: no
+  with_items: "{{ zookeeper_config_items }}"
+  tags:
+    - build
+  notify:
+    - restart zookeeper
+
+
+
+
