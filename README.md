@@ -159,3 +159,24 @@ zk_open_file_descriptor_count	45
 zk_max_file_descriptor_count	4096
 vagrant@vagrant:~/training/Ansible$
 ```
+
+Single Node Kafka Installation<br/>
+Kafka playbook is based on: https://github.com/sansible/kafka<br/>
+The playbook has been udpated to support Ubuntu 18.04<br/>
+
+1) ssh into vagrant machine<br/>
+```
+   vagrant ssh
+```
+2) cd ~/training/Ansible directory
+3) run kafka playbook<br/>
+```
+   ansible-playbook -v playbooks/kafka.yml
+```
+4) Verify kakfa is up
+```
+vagrant@vagrant:~$ echo dump | nc localhost 2181 | grep brokers
+	/brokers/ids/3
+	/brokers/ids/1
+	/brokers/ids/2
+```
