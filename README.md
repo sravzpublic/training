@@ -180,3 +180,10 @@ vagrant@vagrant:~$ echo dump | nc localhost 2181 | grep brokers
 	/brokers/ids/1
 	/brokers/ids/2
 ```
+
+Sravz.Jobs setup
+```
+$ cd ~/SravzNew/Sravz.Ansible
+$ ansible-playbook  playbooks/vagrant/sravz.setup.yml --vault-password-file ~/.vault_pass.txt
+$ ansible-playbook  playbooks/vagrant/sravz.website.yml --vault-password-file ~/.vault_pass.txt --tags jobs_kafka
+```
