@@ -20,7 +20,7 @@
   become: true
   copy: src=mongodb.pem dest=/etc/mongodb/mongodb.pem owner=mongod group=mongod mode=0400
 
-  
+
 #- name: pause
 #  pause: seconds=20
 
@@ -28,5 +28,4 @@
 #  mongodb_user: database=admin name=admin password={{ mongo_admin_pass }} login_port={{ mongoc_port }} state=present
 #  ignore_errors: yes
 #  tags:
-#    - add_admin_user       
-  
+#    - add_admin_user

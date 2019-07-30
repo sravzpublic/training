@@ -38,18 +38,21 @@ mongodb_config_items:
       instance_name: server1
       instance_id: 1
       replica_set: replica_set1
+      bindIpAll: 'true'
     -
       mongod_port: 27001
       mongodb_datadir_prefix: /data/server2
       instance_name: server2
       instance_id: 2
       replica_set: replica_set1
+      bindIpAll: 'true'
     -
       mongod_port: 27002
       mongodb_datadir_prefix: /data/server3
       instance_name: server3
       instance_id: 3
       replica_set: replica_set1
+      bindIpAll: 'true'
 # To Add Shard: Step 1: Define 3 replicaton nodes
 #Shard2#Set2
     -
@@ -58,18 +61,21 @@ mongodb_config_items:
       instance_name: server4
       instance_id: 4
       replica_set: replica_set2
+      bindIpAll: 'true'
     -
       mongod_port: 27006
       mongodb_datadir_prefix: /data/server5
       instance_name: server5
       instance_id: 5
       replica_set: replica_set2
+      bindIpAll: 'true'
     -
       mongod_port: 27007
       mongodb_datadir_prefix: /data/server6
       instance_name: server6
       instance_id: 6
       replica_set: replica_set2
+      bindIpAll: 'true'
   replica_sets:
     -
       name: replica_set1
@@ -115,18 +121,21 @@ mongodb_config_items:
       instance_name: mongoc1
       instance_id: 1
       replica_set: replica_set_mongoc1
+      bindIpAll: 'true'
     -
       mongoc_port: 28001
       mongodb_datadir_prefix: /data/configdb2
       instance_name: mongoc2
       instance_id: 2
       replica_set: replica_set_mongoc1
+      bindIpAll: 'true'
     -
       mongoc_port: 28002
       mongodb_datadir_prefix: /data/configdb3
       instance_name: mongoc3
       instance_id: 3
       replica_set: replica_set_mongoc1
+      bindIpAll: 'true'
   mongoc_replica_sets:
     -
       name: replica_set_mongoc1
@@ -153,18 +162,21 @@ mongodb_config_items:
       instance_name: mongos1
       instance_id: 1
       configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      bindIpAll: 'true'
     -
       mongos_port: 26001
       mongodb_datadir_prefix: /data/mongos2
       instance_name: mongos2
       instance_id: 2
       configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      bindIpAll: 'true'
     -
       mongos_port: 26002
       mongodb_datadir_prefix: /data/mongos3
       instance_name: mongos3
       instance_id: 3
       configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      bindIpAll: 'true'
   mongos_shards:
     -
       mongos_port: 26000

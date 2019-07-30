@@ -16,6 +16,7 @@ processManagement:
 # network interfaces
 net:
   port: {{ item.mongos_port }}
+  bindIpAll: {{ item.bindIpAll }}
   ssl:
     mode: preferSSL
     PEMKeyFile: /etc/mongodb/mongodb.pem
@@ -23,7 +24,7 @@ security:
    keyFile: {{ item.mongodb_datadir_prefix }}/mongos-{{ item.instance_name }}/secret
 
 #operationProfiling:
-   
+
 #replication:
 
 sharding:
