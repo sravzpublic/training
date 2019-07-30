@@ -21,14 +21,6 @@
   become: true
   file: path={{ mongodb_datadir_prefix }} owner=mongod group=mongod state=directory
 
-- name: Install pip
-  become: true
-  apt: pkg=python-pip state=present
-
-- name: Install the latest pymongo package
-  become: true
-  pip: name=pymongo state=latest use_mirrors=no
-
 - name: Set directory ownership
   become: true
   file: dest={{item}} owner=mongod group=mongod state=directory recurse=yes
