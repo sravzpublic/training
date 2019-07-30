@@ -27,10 +27,11 @@ processManagement:
 # network interfaces
 net:
   port: {{ item.mongoc_port }}
+  bindIpAll: {{ item.bindIpAll }}
   ssl:
     mode: preferSSL
     PEMKeyFile: /etc/mongodb/mongodb.pem
-    
+
 security:
    keyFile: {{ item.mongodb_datadir_prefix }}/configdb-{{ item.instance_name }}/secret
    authorization: {{mongodb_security_authorization}}
@@ -38,7 +39,7 @@ security:
 
 replication:
    replSetName: {{ item.replica_set }}
-   
+
 #replication:
 
 sharding:
