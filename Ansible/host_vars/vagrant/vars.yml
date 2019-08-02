@@ -193,7 +193,7 @@ mongodb_config_items:
 zookeeper_config_items:
   -
     config_key: server.1
-    config_value: "server.1=192.168.56.2:2888:3888"
+    config_value: "server.1=192.168.56.4:2888:3888"
   -
     config_key: autopurge.snapRetainCount
     config_value: autopurge.snapRetailCount=10
