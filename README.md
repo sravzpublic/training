@@ -184,6 +184,12 @@ vagrant@vagrant:~$ echo dump | nc localhost 2181 | grep brokers
 Sravz.Jobs setup
 ```
 $ cd ~/SravzNew/Sravz.Ansible
+$ bash ~/SravzSecret/copy_files.sh
 $ ansible-playbook  playbooks/vagrant/sravz.setup.yml --vault-password-file ~/.vault_pass.txt
 $ ansible-playbook  playbooks/vagrant/sravz.website.yml --vault-password-file ~/.vault_pass.txt --tags jobs_kafka
+
+#Add these two line to the top of the file
+import pandas as pd
+pd.core.common.is_list_like = pd.api.types.is_list_like
+file: /home/vagrant/.virtualenvs/python3.6/lib/python3.6/site-packages/pandas_datareader/fred.py
 ```
