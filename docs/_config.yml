@@ -28,10 +28,8 @@ twitter_username: sravzpublic
 github_username:  sravzpublic
 
 # Build settings
-theme: just-the-docs
 remote_theme: pmarsceill/just-the-docs
-plugins:
-  - jekyll-feed
+search_enabled: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.
