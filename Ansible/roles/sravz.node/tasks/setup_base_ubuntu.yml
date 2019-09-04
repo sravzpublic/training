@@ -1,0 +1,62 @@
+---
+  - name: Update apt
+    become: yes
+    apt:
+      cache_valid_time: 1800
+      update_cache: yes
+    tags:
+      - build
+      - setup
+      - basic
+      - apt
+      - apt-update
+
+  - name: Sync ntp
+    include_role:
+      name: geerlingguy.ntp
+    vars:
+      ntp_timezone: America/New_York
+      ansible_become: yes
+    tags:
+      - build
+      - setup
+      - basic
+      - ntp
+#
+  - name: add hostname to /etc/hosts
+    become: yes
+    lineinfile:
+      dest: /etc/hosts
+      line: "127.0.1.1 {{ full_hostname }} {{ short_hostname }}"
+      insertafter: '^127\.0\.0\.1'
+      state: present
+    tags:
+      - build
+      - setup
+      - etchosts
+      - basic
+
+# Check if Pip installed else install it
+  - name: check to see if pip is already installed
+    command: "pip3 --version"
+    ignore_errors: true
+    register: pip_is_installed
+    changed_when: false
+
+  - name: Install pip3
+    become: yes
+    apt:
+      name:  [python3-pip]
+      allow_unauthenticated: yes
+#
+    when: pip_is_installed.rc != 0
+
+# Pip
+  - name: Upgrade setup tools before installing pip packages
+    become: yes
+    pip:
+      name: setuptools
+      state: latest
+      executable: pip3
+    tags:
+      - pip

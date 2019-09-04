@@ -210,29 +210,10 @@ Sravz.Rest/npm-debug.log*
 *.out
 *.a
 
-*/SravzGo/src/golang.org/*
-*/Sravz.Vagrant/Vagrant/dist/*
-SravzWeb/app/*/*.js
-Sravz.Rest/typings/**
 *.map
 *.tar.gz
 *.gz
-Sravz.Vagrant/Vagrant/dist/
-SravzGo/src/cloud.google.com/
-SravzGo/src/contrib.go.opencensus.io/
-SravzGo/src/github.com/*
-SravzGo/src/go.opencensus.io/
-SravzGo/src/golang.org/*
-SravzGo/src/google.golang.org/
-SravzGo/src/gopkg.in/inf.v0/
-SravzGo/src/sravz.com/main
-SravzGo/src/sravz.com/sravze2e
-SravzGo/src/sravz.com/sravzgo
-SravzGo/src/sravz.com/debug
-SravzWeb/app/*/*/*.js
 
-
-SravzWeb/app/app.js
-SravzGo/src/golang.org/*
-Sravz.Rest/public/*
-SravzGo/src/golang.org/x/tools
+galaxy
+Vagrant2
+dist

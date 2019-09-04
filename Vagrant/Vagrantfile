@@ -32,7 +32,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.56.4"
 
   config.vm.provider "virtualbox" do |vb|
-     vb.memory = "3000"
+     vb.memory = "5000"
      vb.cpus = 8
    end
 
@@ -41,6 +41,8 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder "../", "/home/vagrant/training/", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/"], type: "virtualbox", id: "training"
+  config.vm.synced_folder "../../sravznew", "/home/vagrant/SravzNew/", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/", "node_modules"], type: "virtualbox", id: "SravzNew"
+  config.vm.synced_folder "../../SravzSecret", "/home/vagrant/SravzSecret/", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/", "node_modules"], type: "virtualbox", id: "SravzSecret"
 
   config.vm.provision "shell", :path => "provision.sh"
 

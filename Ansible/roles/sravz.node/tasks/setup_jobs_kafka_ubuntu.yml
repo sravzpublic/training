@@ -1,0 +1,52 @@
+---
+  - name: Install Jobs/Kafka pacakges
+    become: yes
+    apt:
+      name: "{{ item }}"
+      allow_unauthenticated: yes
+    with_items:
+      - build-essential
+      - libsasl2-dev
+      - "{{python_version}}-dev"
+    tags:
+      - build
+      - setup
+      - apt
+      - jobs_setup
+
+  - name: Copy PIP requirements file
+    copy:
+      src: "{{ role_path }}/files/requirements.txt"
+      dest: /tmp/requirements.txt
+    tags:
+      - build
+      - setup
+      - pip
+      - create_virtual_env
+
+  - name: Transfer the script
+    template: src=virtual_env.sh dest=/tmp/virtual_env.sh mode=0777
+    tags:
+      - create_virtual_env
+
+  # Script will fail if Sravz repo is not found, run website play and then rerun this
+  - name: Execute /tmp/virtual_env.sh
+    command: bash /tmp/virtual_env.sh
+    tags:
+      - create_virtual_env
+
+  # Add Go Root
+  - include_tasks: add_env_variable_to_profile.yml
+    loop:
+      - { 'name': 'WORKON_HOME', 'value': '/home/{{ansible_user_id}}/.virtualenvs' }
+      - { 'name': 'PROJECT_HOME', 'value': '{{jobs_directory}}' }
+      - { 'name': 'VIRTUALENVWRAPPER_PYTHON',  'value': '/usr/bin/{{python_version}}'  }
+      - { 'name': 'VIRTUALENVWRAPPER_VIRTUALENV',  'value': '/usr/bin/virtualenv'  }
+    tags:
+      - update_path_variable
+
+  - lineinfile:
+      path:  "{{profile_path}}"
+      line: 'source /usr/local/bin/virtualenvwrapper.sh'
+    tags:
+      - update_path_variable

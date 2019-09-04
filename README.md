@@ -24,6 +24,10 @@ e. verify ansible works<br/>
         "ping": "pong"
     }
 ```
+f. Install ansible galaxy roles<br/>
+```
+vagrant@vagrant:~/training/Ansible$ ansible-galaxy install --roles-path ./roles/galaxy -r requirements.yml
+```
 
 Test ansible playbooks:<br/>
 
@@ -179,4 +183,18 @@ vagrant@vagrant:~$ echo dump | nc localhost 2181 | grep brokers
 	/brokers/ids/3
 	/brokers/ids/1
 	/brokers/ids/2
+```
+
+Sravz Development Environment: Sravz-Node setup:
+```
+vagrant@vagrant:~/training/Ansible$ ansible-playbook -v playbooks/sravz-node.yml
+```
+
+```
+# Verify virtualenv and python3.6 installed
+vagrant@vagrant:~$ source ~/.profile
+vagrant@vagrant:~$ workon python3.6
+(python3.6) vagrant@vagrant:~$
+(python3.6) vagrant@vagrant:~$ python --version
+Python 3.6.8
 ```
