@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Sravz Documentation
+title: Sravz Docs
 email: contactus@sravz.com
 description: >- # this means to ignore newlines until "baseurl:"
   Sravz Documentation
@@ -28,7 +28,7 @@ twitter_username: sravzpublic
 github_username:  sravzpublic
 
 # Build settings
-theme: minima
+theme: just-the-docs
 plugins:
   - jekyll-feed
 
