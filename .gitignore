@@ -214,6 +214,6 @@ Sravz.Rest/npm-debug.log*
 *.tar.gz
 *.gz
 
-*/galaxy/*
-*/Vagrant2/*
-*/dist/*
+galaxy
+Vagrant2
+dist

@@ -1,0 +1,25 @@
+---
+# Basic setup
+
+  - name: Install IIS Web-Server with sub features and management tools
+    win_feature:
+      name: Web-Server
+      state: present
+      include_sub_features: yes
+      include_management_tools: yes
+    register: win_feature
+
+  - name: Sravz Log directory
+    win_file:
+      path: 'c:\sites\logs'
+      state: directory
+
+  - name: Sravz temp directory
+    win_file:
+      path: 'c:\temp'
+      state: directory
+
+  - name: Install powershell community extensions
+    win_command: powershell.exe Install-Module -Name Pscx -RequiredVersion 3.2.2 -Force
+    tags:
+      - install_pscx

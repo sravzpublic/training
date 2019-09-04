@@ -1,0 +1,18 @@
+---
+  - name: Install chocolatey packages
+    win_chocolatey:
+      name: "{{ item }}"
+      state: present
+      ignore_checksums: yes
+    with_items:
+      - iisexpress
+    tags:
+      - setup_local_dev_env
+      - setup_local_chocolatey
+
+  - name: Vagrant commands
+    win_command: vagrant up
+    args:
+      chdir: "{{SravzVagrantVMDir}}"
+    tags:
+      - setup_local_vagrant_up

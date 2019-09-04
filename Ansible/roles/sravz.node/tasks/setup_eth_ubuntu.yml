@@ -1,0 +1,41 @@
+---
+  - name: Install Ethereum packages
+    become: yes
+    apt:
+      name: "{{ item }}"
+      allow_unauthenticated: yes
+    with_items:
+      - software-properties-common
+    tags:
+      - build
+      - setup
+      - apt-get
+      - ethereum_setup
+      
+
+  - name: Add APT repository
+    become: yes
+    apt_repository:
+      repo: ppa:ethereum/ethereum
+      state: present
+    notify: Update apt
+    tags:
+      - build
+      - setup
+      - apt-get
+      - ethereum_setup
+           
+  - name: Install Ethereum packages
+    become: yes
+    apt:
+      name: "{{ item }}"
+      allow_unauthenticated: yes
+    with_items:
+      - ethereum
+    tags:
+      - build
+      - setup
+      - apt-get
+      - ethereum_setup
+
+      

@@ -1,0 +1,7 @@
+# from galaxy
+- src: sansible.users_and_groups
+- src: sansible.kafka
+- src: sansible.zookeeper
+- src: geerlingguy.nginx
+- src: AerisCloud.disk
+- src: geerlingguy.ntp

@@ -24,6 +24,10 @@ e. verify ansible works<br/>
         "ping": "pong"
     }
 ```
+f. Install ansible galaxy roles<br/>
+```
+vagrant@vagrant:~/training/Ansible$ ansible-galaxy install --roles-path ./roles/galaxy -r requirements.yml
+```
 
 Test ansible playbooks:<br/>
 
@@ -181,15 +185,16 @@ vagrant@vagrant:~$ echo dump | nc localhost 2181 | grep brokers
 	/brokers/ids/2
 ```
 
-Sravz.Jobs setup
+Sravz Development Environment: Sravz-Node setup:
 ```
-$ cd ~/SravzNew/Sravz.Ansible
-$ bash ~/SravzSecret/copy_files.sh
-$ ansible-playbook  playbooks/vagrant/sravz.setup.yml --vault-password-file ~/.vault_pass.txt
-$ ansible-playbook  playbooks/vagrant/sravz.website.yml --vault-password-file ~/.vault_pass.txt --tags jobs_kafka
+vagrant@vagrant:~/training/Ansible$ ansible-playbook -v playbooks/sravz-node.yml
+```
 
-#Add these two line to the top of the file
-import pandas as pd
-pd.core.common.is_list_like = pd.api.types.is_list_like
-file: /home/vagrant/.virtualenvs/python3.6/lib/python3.6/site-packages/pandas_datareader/fred.py
+```
+# Verify virtualenv and python3.6 installed
+vagrant@vagrant:~$ source ~/.profile
+vagrant@vagrant:~$ workon python3.6
+(python3.6) vagrant@vagrant:~$
+(python3.6) vagrant@vagrant:~$ python --version
+Python 3.6.8
 ```
