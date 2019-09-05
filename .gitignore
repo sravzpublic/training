@@ -217,3 +217,5 @@ Sravz.Rest/npm-debug.log*
 galaxy
 Vagrant2
 dist
+_site
+.jekyll-cache
