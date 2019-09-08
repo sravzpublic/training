@@ -78,6 +78,7 @@ vagrant@vagrant:~$ workon python3.6
 Python 3.6.8
 ```
 
+```html
 <div id="disqus_thread"></div>
 <script>
 
@@ -98,3 +99,4 @@ s.setAttribute('data-timestamp', +new Date());
 })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+```
