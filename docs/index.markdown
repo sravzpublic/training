@@ -4,6 +4,7 @@ title: Home
 nav_order: 1
 description: "Share Research And ViZualize (Sravz) documentation."
 permalink: /
+comments: true
 ---
 
 ## Table of contents

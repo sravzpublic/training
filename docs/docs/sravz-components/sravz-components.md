@@ -4,6 +4,7 @@ title: Sravz Components
 nav_order: 3
 has_children: true
 permalink: /docs/sravz-components
+comments: true
 ---
 
 # Sravz Components

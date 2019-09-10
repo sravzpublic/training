@@ -3,10 +3,8 @@ layout: default
 title: Zookeeper
 parent: Sravz Components
 nav_order: 6
+comments: true
 ---
-
-# Code
-{: .no_toc }
 
 ## Table of contents
 {: .no_toc .text-delta }

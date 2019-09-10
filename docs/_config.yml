@@ -22,13 +22,13 @@ title: Sravz Docs
 email: contactus@sravz.com
 description: >- # this means to ignore newlines until "baseurl:"
   Sravz Documentation
-baseurl: "/training/" # the subpath of your site, e.g. /blog
+baseurl: "/training" # the subpath of your site, e.g. /blog
 url: "https://sravzpublic.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: sravzpublic
 #github_username:  sravzpublic
 
 # Build settings
-remote_theme: pmarsceill/just-the-docs
+remote_theme: sravzpublic/just-the-docs
 search_enabled: true
 
 aux_links:
@@ -37,6 +37,10 @@ aux_links:
     "Sravz Home":
       - "//sravz.com"
 
+disqus:
+  shortname: sravz
+
+environment: production
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
