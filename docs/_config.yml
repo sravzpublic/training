@@ -23,7 +23,7 @@ email: contactus@sravz.com
 description: >- # this means to ignore newlines until "baseurl:"
   Sravz Documentation
 baseurl: "/training" # the subpath of your site, e.g. /blog
-url: "https://fd98279.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://sravzpublic.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: sravzpublic
 #github_username:  sravzpublic
 
