@@ -31,6 +31,7 @@ url: "https://training.sravz.com" # the base hostname & protocol for your site, 
 remote_theme: sravzpublic/just-the-docs
 search_enabled: true
 
+
 aux_links:
     "Sravz Github":
       - "//github.com/sravzpublic/training"
