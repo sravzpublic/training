@@ -219,3 +219,4 @@ Vagrant2
 dist
 _site
 .jekyll-cache
+.ipynb_checkpoints
