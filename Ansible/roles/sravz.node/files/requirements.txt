@@ -137,3 +137,4 @@ wrapt==1.10.11
 #pyspark==2.4.3
 # Ensure swap is enabled
 fbprophet==0.5
+jupyterlab
