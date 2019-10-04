@@ -1,0 +1,4 @@
+---
+- hosts: sravzhugo
+  roles:
+     - { role: hugo }

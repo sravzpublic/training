@@ -1,0 +1,24 @@
+---
+- name: Install packages
+  become: yes
+  apt:
+    name: ['ruby', 'ruby-dev']
+    state: present
+  tags:
+    - build
+    - setup
+    - apt_packages
+
+# Add Go Root
+- include_tasks: add_env_variable_to_profile.yml
+  loop:
+    - { 'name': 'GEM_HOME', 'value': '$HOME/gems' }
+    - { 'name': 'PATH', 'value': '$HOME/gems/bin:$PATH' }
+  tags:
+    - update_path_variable
+
+- name: Gem install jekyll bundler
+  shell: "gem install jekyll bundler"
+  environment:
+    GEM_HOME: $HOME/gems'
+    PATH: '$HOME/gems/bin:$PATH'

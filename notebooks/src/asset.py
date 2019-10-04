@@ -23,9 +23,7 @@ class engine(object):
         '''
         return pd.read_csv('{0}{1}.csv'.format(util.constants.DATA_FILE_LOCATION, sravzid), index_col=0)
 
-    def get_combined_charts(self, sravzids):
-        firstDf = None
-        firstSravzID = None
+    def get_assets(self, sravzids):
         data_dfs = []
         for sravzid in sravzids:
             price_df = self.get_historical_price(sravzid)
@@ -34,14 +32,16 @@ class engine(object):
             for name in price_df.columns if name != 'Date']
             price_df = price_df.rename(index=str, columns=column_names)
             data_dfs.append(price_df)
+            # Outer join all data frame on Data column
+            data_df = reduce(lambda  left,right: pd.merge(left,right,on=['Date'],
+                    how='outer'), data_dfs).fillna(method='bfill')
+            #sort price in the decending order of date
+            data_df = data_df.sort_values(by='Date', ascending=False)
+            data_df.index = pd.to_datetime(data_df.index)
+            return data_df
 
-        # Outer join all data frame on Data column
-        data_df = reduce(lambda  left,right: pd.merge(left,right,on=['Date'],
-                how='outer'), data_dfs).fillna(method='bfill')
-        #sort price in the decending order of date
-        data_df = data_df.sort_values(by='Date', ascending=False)
-
-        data_df.index = pd.to_datetime(data_df.index)
+    def get_combined_charts(self, sravzids):
+        data_df = self.get_assets(sravzids)
 
         vertical_sections = len(util.constants.ChartsToDisplayAndAcceptedColumns)
         widthInch = 10
