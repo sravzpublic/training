@@ -13,3 +13,4 @@ cd /home/vagrant/.ssh
 ssh-keygen -f id_rsa -t rsa -N ''
 cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 chown vagrant.vagrant /home/vagrant/.ssh/*
+
