@@ -21,7 +21,10 @@ class engine(object):
             ae = engine()
             ae.get_historical_price('fut_gold')
         '''
-        return pd.read_csv('{0}{1}.csv'.format(util.constants.DATA_FILE_LOCATION, sravzid), index_col=0)
+        data_df = pd.read_csv('{0}{1}.csv'.format(util.constants.DATA_FILE_LOCATION, sravzid), index_col=0)
+        data_df.index = pd.to_datetime(data_df.index)
+        data_df.index = data_df.index.date
+        return data_df
 
     def get_assets(self, sravzids):
         data_dfs = []
@@ -36,8 +39,9 @@ class engine(object):
         data_df = reduce(lambda  left,right: pd.merge(left,right,on=['Date'],
                 how='outer'), data_dfs).fillna(method='ffill')
         #sort price in the decending order of date
-        data_df = data_df.sort_values(by='Date', ascending=False)
+        data_df = data_df.sort_index(ascending=False)
         data_df.index = pd.to_datetime(data_df.index)
+        data_df.index = data_df.index.date
         return data_df
 
     def get_combined_charts(self, sravzids):
