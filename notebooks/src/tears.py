@@ -253,9 +253,6 @@ def create_returns_tear_sheet(returns, positions=None,
     for ax in fig.axes:
         plt.setp(ax.get_xticklabels(), visible=True)
 
-    #plt.show()
-    #if return_fig:
-    #    return fig
 
 def get_rolling_stats(price_df, sravzid, return_fig=True):
     price_df.columns = map(str.lower, price_df.columns)
@@ -275,14 +272,6 @@ def get_rolling_stats(price_df, sravzid, return_fig=True):
         '{0} {1} Price'.format(sravzid, col))
     ax_price_plot.legend()
 
-###
-    # ax_price_all_columns_plot = plt.subplot(gs[1, 1:-1])
-    # ax_price_all_columns_plot.set_yscale('log')
-    # # price_df.plot(ax=ax_price_all_columns_plot)
-    # plot_multi(price_df, ax_price_all_columns_plot)
-    # ax_price_all_columns_plot.set_title(
-    #     '{0} Available Data'.format(sravzid))
-    # ax_price_all_columns_plot.legend()
     chart_index = chart_index + 1
     ax_describe = plt.subplot(gs[chart_index, :])
     ax_describe.axis('off')
@@ -294,7 +283,6 @@ def get_rolling_stats(price_df, sravzid, return_fig=True):
     mpl_table.auto_set_font_size(False)
     mpl_table.set_fontsize(font_size)
     ax_describe.set_title("{0} Summary Statistics".format(sravzid))
-###
 
     chart_index = chart_index + 1
     ax_rolling_mean_plot = plt.subplot(gs[chart_index, :])
