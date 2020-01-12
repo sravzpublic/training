@@ -77,3 +77,30 @@ class Helper(object):
             df.columns = cols_str
         #df.index = [index.decode('utf-8') for index in df.index if isinstance(index, bytes)]
         return df
+
+    @staticmethod
+    def test_df(self):
+        import sys
+        if sys.version_info[0] < 3:
+            from StringIO import StringIO
+        else:
+            from io import StringIO
+
+        import pandas as pd
+
+        TESTDATA = StringIO("""Date,Lastidx_us_spx
+        2019-05-28 00:00:00+00:00,2802.39
+        2019-05-24 00:00:00+00:00,2826.06
+        2019-05-23 00:00:00+00:00,2822.24
+        2019-05-22 00:00:00+00:00,2856.27
+        2019-05-21 00:00:00+00:00,2864.36
+        2019-05-20 00:00:00+00:00,2840.23
+        2019-05-17 00:00:00+00:00,2859.53
+        2019-05-16 00:00:00+00:00,2876.32
+        2019-05-15 00:00:00+00:00,2850.96
+        2019-05-14 00:00:00+00:00,2834.41
+            """)
+
+        df = pd.read_csv(TESTDATA, sep=",")
+
+        return df
