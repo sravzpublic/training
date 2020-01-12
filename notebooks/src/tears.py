@@ -256,3 +256,88 @@ def create_returns_tear_sheet(returns, positions=None,
     #plt.show()
     #if return_fig:
     #    return fig
+
+def get_rolling_stats(price_df, sravzid, return_fig=True):
+    price_df.columns = map(str.lower, price_df.columns)
+
+    col = 'settle'
+
+    vertical_sections = 5
+    widthInch = 10
+    heightInch = vertical_sections * 5
+    fig = plt.figure(figsize=(widthInch, heightInch))
+    gs = gridspec.GridSpec(vertical_sections, 4, wspace=1, hspace=0.5)
+    gs.update(left=0.1, right=0.9, top=0.965, bottom=0.03)
+    chart_index = 0
+    ax_price_plot = plt.subplot(gs[chart_index, :])
+    price_df[col].plot(label=col, ax=ax_price_plot)
+    ax_price_plot.set_title(
+        '{0} {1} Price'.format(sravzid, col))
+    ax_price_plot.legend()
+
+###
+    # ax_price_all_columns_plot = plt.subplot(gs[1, 1:-1])
+    # ax_price_all_columns_plot.set_yscale('log')
+    # # price_df.plot(ax=ax_price_all_columns_plot)
+    # plot_multi(price_df, ax_price_all_columns_plot)
+    # ax_price_all_columns_plot.set_title(
+    #     '{0} Available Data'.format(sravzid))
+    # ax_price_all_columns_plot.legend()
+    chart_index = chart_index + 1
+    ax_describe = plt.subplot(gs[chart_index, :])
+    ax_describe.axis('off')
+    describe_df = price_df.describe().round(3)
+    font_size = 14
+    bbox = [0, 0, 1, 1]
+    mpl_table = ax_describe.table(
+        cellText=describe_df.values, rowLabels=describe_df.index, bbox=bbox, colLabels=describe_df.columns)
+    mpl_table.auto_set_font_size(False)
+    mpl_table.set_fontsize(font_size)
+    ax_describe.set_title("{0} Summary Statistics".format(sravzid))
+###
+
+    chart_index = chart_index + 1
+    ax_rolling_mean_plot = plt.subplot(gs[chart_index, :])
+    #price_df[col].plot(label=col, ax=ax_rolling_mean_plot)
+    price_df[col].rolling(7).mean().plot(
+        label="7 days MA", ax=ax_rolling_mean_plot)
+    price_df[col].rolling(21).mean().plot(
+        label="21 days MA", ax=ax_rolling_mean_plot)
+    price_df[col].rolling(255).mean().plot(
+        label="255 days MA", ax=ax_rolling_mean_plot)
+    ax_rolling_mean_plot.set_title(
+        '{0} {1} Rolling Moving Average'.format(sravzid, col))
+    ax_rolling_mean_plot.legend()
+
+    chart_index = chart_index + 1
+    ax_rolling_std_plot = plt.subplot(gs[chart_index, :])
+    #price_df[col].plot(label=col, ax=ax_rolling_std_plot)
+    price_df[col].rolling(7).std().plot(
+        label="7 days Std", ax=ax_rolling_std_plot)
+    price_df[col].rolling(21).std().plot(
+        label="21 days Std", ax=ax_rolling_std_plot)
+    price_df[col].rolling(255).std().plot(
+        label="255 days Std", ax=ax_rolling_std_plot)
+    ax_rolling_std_plot.set_title(
+        '{0} {1} Rolling Moving Std'.format(sravzid, col))
+    ax_rolling_std_plot.legend()
+
+    chart_index = chart_index + 1
+    ax_df = plt.subplot(gs[chart_index, 1:])
+    series = price_df[col].dropna()
+    dftest = adfuller(series, autolag='AIC')
+    dfoutput = pd.Series(dftest[0:4], index=[
+                         'Test Statistic', 'p-value', '#Lags Used', 'Number of Observations Used'])
+    for key, value in list(dftest[4].items()):
+        dfoutput['Critical Value (%s)' % key] = value
+    font_size = 14
+    bbox = [0, 0, 1, 1]
+    ax_df.axis('off')
+    df_test_df = dfoutput.to_frame()
+    mpl_table = ax_df.table(
+        cellText=df_test_df.values, rowLabels=df_test_df.index, bbox=bbox, colLabels=df_test_df.index)
+    #mpl_table.set_xticklabels(corr_matrix.index, rotation=45)
+    mpl_table.auto_set_font_size(False)
+    mpl_table.set_fontsize(font_size)
+    ax_df.set_title("{0} {1} Price - Dickey Fuller Test".format(sravzid, col))
+
