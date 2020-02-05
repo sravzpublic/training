@@ -5,3 +5,5 @@
 - src: geerlingguy.nginx
 - src: AerisCloud.disk
 - src: geerlingguy.ntp
+- src: ernestas-poskus.ansible-nsq
+

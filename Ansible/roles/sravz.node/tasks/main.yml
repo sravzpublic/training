@@ -4,15 +4,15 @@
 ---
 #Azure
   - import_tasks: setup_windows.yml
-    when: ansible_os_family == "Windows" and "inventory_hostname|lower|search('cloudapp.net')"
+    when: ansible_os_family == "Windows"
   - import_tasks: iis_setup.yml
-    when: ansible_os_family == "Windows" and "inventory_hostname|lower|search('cloudapp.net')"
+    when: ansible_os_family == "Windows"
 #Windows Local
   - import_tasks: setup_ubuntu.yml
     when: ansible_os_family == "Debian"
   - import_tasks: setup_jobs_kafka_ubuntu.yml
-    when: "inventory_hostname|lower|search('kafka') or inventory_hostname|lower|search('jobs') or inventory_hostname|lower|search('vagrant')"
+    when: ansible_os_family == "Debian"
   - import_tasks: setup_portfolio_ubuntu.yml
-    when: "inventory_hostname|lower|search('portfolio') or inventory_hostname|lower|search('vagrant')"
+    when: ansible_os_family == "Debian"
   - import_tasks: setup_analytics_ubuntu.yml
-    when: "inventory_hostname|lower|search('analytics') or inventory_hostname|lower|search('vagrant')"
+    when: ansible_os_family == "Debian"

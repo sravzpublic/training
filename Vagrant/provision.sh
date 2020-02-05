@@ -7,6 +7,7 @@ apt-get install -y ansible
 # Set hostname
 echo "# Required for mongodb sharding to work" >> /etc/hosts
 echo "127.0.0.1 vagrant" >> /etc/hosts
+echo "192.168.56.4 vagrant.sravz.com" >> /etc/hosts
 # Create default ssh-Keys
 rm /home/vagrant/.ssh/id_rsa*
 cd /home/vagrant/.ssh

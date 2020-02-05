@@ -1,0 +1,4 @@
+---
+- hosts: sravznsq
+  roles:
+     - { role: nsq }

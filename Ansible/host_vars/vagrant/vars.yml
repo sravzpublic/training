@@ -1,6 +1,6 @@
 ansible_user: vagrant
 ansible_ssh_pass: vagrant
-full_hostname: vagrant.vm
+full_hostname: vagrant.sravz.com
 short_hostname: vagrant
 # Copy these variables to ansible vault
 mongo_admin_pass: changeme
