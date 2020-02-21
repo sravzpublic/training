@@ -126,7 +126,7 @@ nsq_nsqd:
   #  path to key file
   tls_min_version: 'tls1.0'
   #  minimum SSL/TLS version acceptable ('ssl3.0', 'tls1.0', 'tls1.1', or 'tls1.2') (default 769)
-  tls_required: true
+  tls_required: false
   #  require TLS for client connections (true, false, tcp_https)
   tls_root_ca_file:
   #  path to certificate authority file
@@ -138,11 +138,11 @@ nsq_nsqadmin:
   # graphite HTTP address
   http_address: "{{ nsq_network_address }}:4171"
   # <addr>:<port> to listen on for HTTP clients (default "0.0.0.0:4171")
-  http_client_tls_cert:
+  http_client_tls_cert: "{{nsq_cert_file_path}}"
   # path to certificate file for the HTTP client
-  http_client_tls_insecure_skip_verify:
+  http_client_tls_insecure_skip_verify: true
   # configure the HTTP client to skip verification of TLS certificates
-  http_client_tls_key:
+  http_client_tls_key: "{{nsq_key_file_path}}"
   # path to key file for the HTTP client
   http_client_tls_root_ca_file:
   # path to CA file for the HTTP client
