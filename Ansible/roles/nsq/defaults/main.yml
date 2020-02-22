@@ -38,7 +38,9 @@ nsq_binaries:
 nsq_network_interface: "{{ ansible_default_ipv4.interface }}"
 nsq_network_ip_protocol: 'ipv4'
 
-nsq_network_address: "{{ full_hostname }}"
+#nsq_network_address: "{{ full_hostname }}"
+# Listen on all interfaces. On AWS cannot bind on public IP
+nsq_network_address: "0.0.0.0"
 
 nsq_lookupd_tcp_port: 4160
 nsq_lookupd_http_port: 4161
