@@ -1,16 +1,7 @@
 # This role prepares the Sravz Node.
-# Windows: Sets up IIS and websites in it
-# Ubuntu: Creates directory structure and pulls the github code
 ---
-#Azure
-  - import_tasks: setup_windows.yml
-    when: ansible_os_family == "Windows"
-  - import_tasks: iis_setup.yml
-    when: ansible_os_family == "Windows"
 #Windows Local
   - import_tasks: setup_ubuntu.yml
-    when: ansible_os_family == "Debian"
-  - import_tasks: setup_jobs_kafka_ubuntu.yml
     when: ansible_os_family == "Debian"
   - import_tasks: setup_portfolio_ubuntu.yml
     when: ansible_os_family == "Debian"

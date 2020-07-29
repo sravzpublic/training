@@ -6,7 +6,7 @@ def handler(message):
     return True
 
 r = nsq.Reader(message_handler=handler,
-        lookupd_http_addresses=['http://vagrant.sravz.com:4161'],
+        lookupd_http_addresses=['http://localhost:4161'],
         topic='test', channel='asdf',
         # tls_v1=True,
         # tls_options={

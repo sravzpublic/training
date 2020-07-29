@@ -1,7 +1,8 @@
-ansible_user: vagrant
-ansible_ssh_pass: vagrant
-full_hostname: vagrant.sravz.com
-short_hostname: vagrant
+ansible_user: root
+ansible_connection: local
+# ansible_ssh_pass: localhost
+full_hostname: localhost
+short_hostname: localhost
 # Copy these variables to ansible vault
 mongo_admin_pass: changeme
 mongo_sravz_pass: changeme
@@ -27,7 +28,7 @@ iface: '{{ ansible_default_ipv4.interface }}'
 # The password for admin user
 touch_mongod_service: False
 touch_mongoc_service: False
-vagrant_mongo_host: vagrant
+localhost_mongo_host: localhost
 
 mongodb_config_items:
   instances:
@@ -81,18 +82,18 @@ mongodb_config_items:
       name: replica_set1
       primary:
         mongod_port: 27000
-        hostname: vagrant
+        hostname: localhost
       nodes:
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27000
           priority: 100
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27001
           priority: 99
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27002
           priority: 98
 # To Add Shard: Step 2: Define replication setup
@@ -100,18 +101,18 @@ mongodb_config_items:
       name: replica_set2
       primary:
         mongod_port: 27005
-        hostname: vagrant
+        hostname: localhost
       nodes:
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27005
           priority: 100
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27006
           priority: 99
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 27007
           priority: 98
   mongoc_instances:
@@ -141,18 +142,18 @@ mongodb_config_items:
       name: replica_set_mongoc1
       primary:
         mongod_port: 28000
-        hostname: vagrant
+        hostname: localhost
       nodes:
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 28000
           priority: 100
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 28001
           priority: 99
         -
-          mongod_host: vagrant
+          mongod_host: localhost
           mongod_port: 28002
           priority: 98
   mongos_instances:
@@ -161,39 +162,39 @@ mongodb_config_items:
       mongodb_datadir_prefix: /data/mongos1
       instance_name: mongos1
       instance_id: 1
-      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      configdb: replica_set_mongoc1/localhost:28000,localhost:28001,localhost:28002
       bindIpAll: 'true'
     -
       mongos_port: 26001
       mongodb_datadir_prefix: /data/mongos2
       instance_name: mongos2
       instance_id: 2
-      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      configdb: replica_set_mongoc1/localhost:28000,localhost:28001,localhost:28002
       bindIpAll: 'true'
     -
       mongos_port: 26002
       mongodb_datadir_prefix: /data/mongos3
       instance_name: mongos3
       instance_id: 3
-      configdb: replica_set_mongoc1/vagrant:28000,vagrant:28001,vagrant:28002
+      configdb: replica_set_mongoc1/localhost:28000,localhost:28001,localhost:28002
       bindIpAll: 'true'
   mongos_shards:
     -
       mongos_port: 26000
       name: replica_set1
-      primary_host_port: "vagrant:27000"
+      primary_host_port: "localhost:27000"
 # To Add Shard: Step 3: Add shard in mongos server
     -
       mongos_port: 26000
       name: replica_set2
-      primary_host_port: "vagrant:27005"
+      primary_host_port: "localhost:27005"
 ################ End: MongoDB Variables ####################
 
 ################ Start: Zookeeper Variables ##################
 zookeeper_config_items:
   -
     config_key: server.1
-# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in Vagrant file
+# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in localhost file
     config_value: "server.1=192.168.56.4:2888:3888"
   -
     config_key: autopurge.snapRetainCount
@@ -202,10 +203,10 @@ zookeeper_config_items:
     config_key: autopurge.purgeInterval
     config_value: autopurge.purgeInterval=12
 zookeeper_id: 1
-# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in Vagrant file
+# Should match with   config.vm.network "private_network", ip: "192.168.56.4" in localhost file
 zookeeper_ip: 192.168.56.4
 ################ End: Zookeeper Variables ####################
 
 ################ Start: Kafka Variables ##################
-kafka_advertised_host_name: "{{full_hostname}}"
+kafka_advertised_host_name: "{{localhost}}"
 ################ End: Kafka Variables ####################

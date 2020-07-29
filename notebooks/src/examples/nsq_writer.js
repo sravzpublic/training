@@ -1,6 +1,6 @@
 const nsq = require('nsqjs')
 
-const w = new nsq.Writer('vagrant.sravz.com', 4150)
+const w = new nsq.Writer('localhost', 4150)
 
 w.connect()
 

@@ -3,7 +3,7 @@
 const nsq = require('nsqjs')
 
 const reader = new nsq.Reader('test', 'test_channel', {
-  lookupdHTTPAddresses: 'vagrant.sravz.com:4161'
+  lookupdHTTPAddresses: 'localhost:4161'
 })
 
 reader.connect()

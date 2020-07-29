@@ -6,15 +6,15 @@ is_ubuntu_local_machine: false
 is_nodejs_node: false
 is_mongodb_node: false
 add_swap_space: false
-ip_hostname_entries:
-    - "192.168.56.1 api.vagrant.sravz.com"
+# ip_hostname_entries:
+#     - "192.168.56.1 api.localhost"
 profile_path: "/home/{{ansible_user_id}}/.profile"
 go_version: 1.10
 GOROOT: /usr/lib/go-1.10
 GOPATH: /home/{{ansible_user_id}}/SravzNew/SravzGo
 GOBIN: /home/{{ansible_user_id}}/SravzNew/SravzGo/bin
-extrapath: "/home/vagrant/.virtualenvs/python3.6/bin/:$PATH:/home/vagrant/sravz/development/Sravz.Jobs/dev_util/:/home/vagrant/SravzNew/Sravz.3rdParty/go-ethereum/build/bin:/usr/lib/go-1.10/bin:{{GOBIN}}:"
-python_version: python3.6
+extrapath: "/home/vagrant/.virtualenvs/python3.8/bin/:$PATH:/home/vagrant/sravz/development/Sravz.Jobs/dev_util/:/home/vagrant/SravzNew/Sravz.3rdParty/go-ethereum/build/bin:/usr/lib/go-1.10/bin:{{GOBIN}}:"
+python_version: python3.8
 # Applications env
 app_env: "vagrant"
 app_env_name: "vagrant"
@@ -33,7 +33,7 @@ go_directory: "{{vagrant_src_location}}/SravzGo/"
 # kafka_prodcon_user: "{{ansible_user}}"
 # kafka_prodcon_group: "{{ansible_user}}"
 # systemd_service_action: restarted
-# python_version: python3.6
+# python_version: python3.8
 # GOPATH: "{{go_directory}}"
 # GOBIN: "{{go_directory}}/bin"
 # kafka_topic_no_partitions: 3

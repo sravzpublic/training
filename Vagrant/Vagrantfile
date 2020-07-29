@@ -42,7 +42,7 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   config.vm.synced_folder "../", "/home/vagrant/training/", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/"], type: "virtualbox", id: "training"
   config.vm.synced_folder "../../sravznew", "/home/vagrant/SravzNew/", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/", "node_modules"], type: "virtualbox", id: "SravzNew"
-  config.vm.synced_folder "../../SravzSecret", "/home/vagrant/SravzSecret/", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/", "node_modules"], type: "virtualbox", id: "SravzSecret"
+  config.vm.synced_folder "../../secrets", "/home/vagrant/sravz-secrets/", mount_options: ["dmode=775,fmode=666"], rsync__exclude: [".git/", "node_modules"], type: "virtualbox", id: "SravzSecret"
 
   config.vm.provision "shell", :path => "provision.sh"
 

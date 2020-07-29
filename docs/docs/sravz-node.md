@@ -70,11 +70,11 @@ vagrant@vagrant:~/training/Ansible$ ansible-playbook -v playbooks/sravz-node.yml
 ## Verify python virtual environment installation
 
 ```bash
-# Verify virtualenv and python3.6 installed
+# Verify virtualenv and python3.8 installed
 vagrant@vagrant:~$ source ~/.profile
-vagrant@vagrant:~$ workon python3.6
+vagrant@vagrant:~$ workon python3.8
 # Python version should show in the prompt
-(python3.6) vagrant@vagrant:~$ python --version
+(python3.8) vagrant@vagrant:~$ python --version
 Python 3.6.8
 ```
 
