@@ -1,0 +1,20 @@
+# {{ansible_managed}}
+
+[Unit]
+Description=NSQ nsqadmin service
+After=network.target
+Wants=network.target
+
+[Service]
+ExecStart={{ nsq_install_directory }}/{{ nsq_release }}/bin/nsqadmin {{ nsq_nsqadmin_opts }} {% if nsq_nsqlookupd_install and nsq_lookupd_http_addresses | length > 0 %}{% for item in nsq_lookupd_http_addresses %}-lookupd-http-address={{ item }}:{{ nsq_lookupd_http_port }} {% endfor %}{% endif %}
+
+Restart=always
+RestartSec=20
+TimeoutSec=300
+User={{ nsq_owner }}
+Group={{ nsq_group }}
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

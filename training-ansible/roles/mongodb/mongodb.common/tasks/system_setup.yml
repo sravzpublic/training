@@ -1,0 +1,70 @@
+---
+- name: Set sysctl File Limits
+  become: true
+  copy:
+    src: 50-fs.conf
+    dest: /etc/sysctl.d
+
+- name: Set Shell File Limits
+  become: true
+  copy:
+    src: 91-nofiles.conf
+    dest: /etc/security/limits.d
+    
+- name: Set proc Limits
+  become: true
+  copy:
+    src: 90-noproc.conf
+    dest: /etc/security/limits.d
+    
+- name: Reload systemctl
+  become: true
+  shell: systemctl daemon-reload
+  
+# Disable list time access updates to file system  
+#- name: Ensure fstab uses noatime
+#  mount:
+#    name: "/"
+#    opts: noatime
+#    state: present
+
+#- name: Add nodev to /etc/fstab
+#  lineinfile:
+#    dest=/etc/fstab
+#    backup=yes
+#    backrefs=yes
+#    state=present
+#    regexp='(^/dev[\w/_-]+(\s+(?!nodev)[\w,]+)*)'
+#    line='\1,nodev'
+    
+#- name: Ensure / uses noatime
+#  mount:
+#    name: "{{ item.mount }}"
+#    src: "{{ item.device }}"
+#    fstype: "{{ item.fstype }}"
+#    opts: "{{ item.options }},noatime"
+#    state: present
+#  with_items: ansible_mounts
+#  when: item.find("/dev/mapper/vagrant--vg-root") >= 0 and item.options.find("noatime") == -1
+
+- name: Backup fstab
+  become: true
+  raw: cp /etc/fstab /etc/fstab.`date +"%Y-%m-%d_%H-%M-%S"`
+  
+#- name: Add noatime
+#  become: true
+#  raw: sed -e '/ \/ /{/noatime/!s/\S\S*/&,noatime/4}' /etc/fstab > /etc/fstab
+
+- name: Add noatime to /etc/fstab
+  become: true
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '/dev/mapper/vagrant--vg-root /               ext4    errors=remount-ro 0       1'
+    line: '/dev/mapper/vagrant--vg-root /               ext4    errors=remount-ro,noatime 0       1'
+    owner: root
+    group: root
+    mode: 0644
+  
+
+
+

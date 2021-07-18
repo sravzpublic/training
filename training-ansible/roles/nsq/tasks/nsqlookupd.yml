@@ -1,0 +1,25 @@
+---
+- name: Check if systemd exists
+  stat: path=/etc/systemd/system
+  register: systemd_check
+
+- name: Install nsqlookupd systemd service
+  template:
+    src: nsqlookupd.service.j2
+    dest: /etc/systemd/system/nsqlookupd.service
+  when: systemd_check.stat.exists == true
+  notify:
+    - reload daemon
+    - restart nsqlookupd
+  become: yes
+
+# For fresh install restart does not work, so start the service
+- name: is nsqlookupd already running?
+  shell: service nsqlookupd status warn=false
+  register: _svc_nsqlookupd
+  failed_when: _svc_nsqlookupd.rc != 0 and ("unrecognized service" not in _svc_nsqlookupd.stderr)
+  ignore_errors: true
+
+- name: start nsqlookupd if not running
+  service: name=nsqlookupd state=started
+  when: "_svc_nsqlookupd.rc != 0"

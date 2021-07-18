@@ -1,0 +1,31 @@
+---
+  - include: setup_base_ubuntu.yml
+
+  # - name: Add IP addresses of all hosts to the hosts file
+  #   become: yes
+  #   lineinfile:
+  #     dest: /etc/hosts
+  #     line: "{{item}}"
+  #     state: present
+  #   with_items:
+  #      - "{{ip_hostname_entries}}"
+  #   tags:
+  #     - update_hostfile
+
+# Script module not able to find file
+  - name: Add swap space
+    become: yes
+    script: "{{ role_path }}/files/increase_swap.sh"
+    tags:
+      - add_swap_space
+    when: add_swap_space
+
+  - name: Generate ubuntu user keys
+    become: yes
+    user:
+      name: ubuntu
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+    tags:
+      - generate_ubuntu_ssh_key

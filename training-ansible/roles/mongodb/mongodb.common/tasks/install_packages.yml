@@ -1,0 +1,34 @@
+---
+- name: MongoDB community
+  become: true
+  command: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+
+- name: MongoDB | Add 10Gen repository
+  become: true
+  shell:
+    echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+    creates=/etc/apt/sources.list.d/mongodb-org-4.0.list
+
+- name: MongoDB | Install latest MongoDB release
+  become: true
+  apt: pkg=mongodb-org state=present update_cache=yes
+
+- name: Create the mongod user
+  become: true
+  user: name=mongod comment="MongoD"
+
+- name: Create the data directory for the namenode metadata
+  become: true
+  file: path={{ mongodb_datadir_prefix }} owner=mongod group=mongod state=directory
+
+- name: Set directory ownership
+  become: true
+  file: dest={{item}} owner=mongod group=mongod state=directory recurse=yes
+  with_items:
+  - /var/log/mongodb
+  - /var/run/mongo
+  - /etc/mongodb/
+
+- name: Copy pem file
+  become: true
+  copy: src=mongodb.pem dest=/etc/mongodb/mongodb.pem owner=mongod group=mongod mode=0400

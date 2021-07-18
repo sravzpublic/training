@@ -1,0 +1,13 @@
+//devcontainer.json
+{
+    "name": "training",
+    "dockerComposeFile": "../docker-compose.yaml",
+    "service": "training",
+    "workspaceFolder": "/workspace/",
+    "shutdownAction": "none",
+    "extensions": [
+        "golang.go",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "ms-python.python"
+    ],
+}

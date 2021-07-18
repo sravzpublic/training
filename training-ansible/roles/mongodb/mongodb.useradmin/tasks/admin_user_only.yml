@@ -1,0 +1,33 @@
+---
+### Add admin user to config/db servers
+- name: add admin user to config server
+  raw: >
+    mongo admin  --port {{ item.primary.mongod_port }} --eval "printjson(db.createUser({user: \"admin\", pwd: \"{{mongo_admin_pass}}\", roles: [ { role: \"userAdminAnyDatabase\", db: \"admin\" },  { role: \"clusterAdmin\", db: \"admin\" } ]}))"
+  tags:
+    - add_admin_user   
+  with_items: "{{ mongodb_config_items.mongoc_replica_sets }}"       
+  when: add_admin_to_config_server
+
+- name: remove admin user from config server
+  raw: >
+    mongo admin --port {{ item.primary.mongod_port }} -u admin -p "{{mongo_admin_pass}}" --authenticationDatabase admin --eval "db.dropUser(\"admin\")"
+  tags:
+    - remove_admin_user   
+  with_items: "{{ mongodb_config_items.mongoc_replica_sets }}"       
+  when: remove_admin_to_config_server  
+
+- name: add admin user to db server
+  raw: >
+    mongo admin  --port {{ item.primary.mongod_port }} --eval "printjson(db.createUser({user: \"admin\", pwd: \"{{mongo_admin_pass}}\", roles: [ { role: \"userAdminAnyDatabase\", db: \"admin\" },  { role: \"clusterAdmin\", db: \"admin\" }]}))"
+  tags:
+    - add_admin_user   
+  with_items: "{{ mongodb_config_items.replica_sets }}"       
+  when: add_admin_to_db_server  
+
+- name: remove admin user from db server
+  raw: >
+    mongo admin --port {{ item.primary.mongod_port }} -u admin -p "{{mongo_admin_pass}}" --authenticationDatabase admin --eval "db.dropUser(\"admin\")"
+  tags:
+    - remove_admin_user   
+  with_items: "{{ mongodb_config_items.replica_sets }}"       
+  when: remove_admin_to_db_server  

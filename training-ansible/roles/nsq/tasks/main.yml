@@ -1,0 +1,78 @@
+---
+# tasks file for ansible-nsq
+
+- name: Create the nsq_owner user
+  become: true
+  user:
+    name: "{{nsq_owner}}"
+    comment: "{{nsq_owner}}"
+
+- name: "Downloading NSQ binaries"
+  get_url:
+    url: "{{ nsq_download_url }}"
+    dest: "/tmp/{{ nsq_release_archive }}"
+    owner: "{{ nsq_owner }}"
+    group: "{{ nsq_group }}"
+    mode: 0644
+
+- name: "Creating NSQ data directory"
+  file:
+    path: "{{ nsq_data_directory }}"
+    owner: "{{ nsq_owner }}"
+    group: "{{ nsq_group }}"
+    mode: "{{ nsq_data_directory_mode }}"
+    state: directory
+    recurse: yes
+  become: yes
+
+- name: "Creating NSQ config directory"
+  file:
+    path: "{{ nsq_config_directory }}"
+    owner: "{{ nsq_owner }}"
+    group: "{{ nsq_group }}"
+    mode: "{{ nsq_config_directory_mode }}"
+    state: directory
+    recurse: yes
+  become: yes
+
+- name: Unarchive NSQ
+  unarchive:
+    copy: no
+    src: "/tmp/{{ nsq_release_archive }}"
+    dest: "{{ nsq_install_directory }}"
+    creates: "{{ nsq_install_directory }}/{{ nsq_release }}/bin"
+  become: yes
+
+- name: "Link NSQ binaries to /usr/local/bin"
+  file:
+    src: "{{ nsq_install_directory }}/{{ nsq_release }}/bin/{{ item }}"
+    dest: "/usr/local/bin/{{ item }}"
+    owner: "{{ nsq_owner }}"
+    group: "{{ nsq_group }}"
+    state: link
+  with_items: "{{ nsq_binaries }}"
+  become: yes
+
+- name: Copy pem file
+  become: true
+  copy:
+    src: "{{item}}"
+    dest: "{{nsq_config_directory}}/{{item}}"
+    owner: "{{nsq_owner}}"
+    group: "{{nsq_group}}"
+    mode: 0400
+  with_items:
+    - "{{nsq_key_file_name}}"
+    - "{{nsq_cert_file_name}}"
+
+- include: nsqlookupd.yml
+  when: nsq_nsqlookupd_install
+  become: yes
+
+- include: nsqd.yml
+  when: nsq_nsqd_install
+  become: yes
+
+- include: nsqadmin.yml
+  when: nsq_nsqadmin_install
+  become: yes
