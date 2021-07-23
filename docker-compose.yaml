@@ -95,7 +95,7 @@ services:
     command: tail -F anything
     volumes:
       - ~/.aws:/home/ubuntu/.aws:ro
-      - ./:/workspace
+      - ./:/home/ubunut/workspace
     restart: always
     # depends_on:
     #   - nsqlookupd

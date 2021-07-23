@@ -21,19 +21,22 @@ help: ## This help.
 print-env: ## Print Env
 	env
 
+docker-use-default-context: ## Docker use default context
+	docker context use default
+
 ### Build Commands
-docker-build: ## Builds docker image
+docker-build: docker-use-default-context ## Builds docker image
 	docker build --tag public.ecr.aws/b8h3z2a1/sravz/training:$(SRAVZ_TRAINING_VERSION) .
 
 ### Docker Push Image
-docker-push: ## Docker: push docker images
+docker-push: docker-use-default-context ## Docker: push docker images
 	docker push public.ecr.aws/b8h3z2a1/sravz/training:$(SRAVZ_TRAINING_VERSION)
 
 ### Docker compose commands
-docker-compose-rebuild-service: ## Rebuild docker compose service: make docker-compose-rebuild-service service=backend-go
+docker-compose-rebuild-service: docker-use-default-context ## Rebuild docker compose service: make docker-compose-rebuild-service service=training
 	docker-compose up -d --no-deps --build $(service)
 
-docker-compose: ## Run docker compose action: make docker-compose up/down
+docker-compose: docker-use-default-context## Run docker compose action: make docker-compose action=up/down
 	docker network create training | true
 	echo "Running docker command $(action)"; \
 	if [ "$(action)" == "up" ]; then \
@@ -42,8 +45,8 @@ docker-compose: ## Run docker compose action: make docker-compose up/down
         docker compose $(action); \
 	fi
 
-docker-compose-tail-logs: ## Tails docker logs: make docker-compose-tail-logs service=training
+docker-compose-tail-logs: docker-use-default-context ## Tails docker logs: make docker-compose-tail-logs service=training
 	docker-compose logs -f --tail=10 $(service)
 
 docker-exec: ## Exec into a docker container: make docker-exec service=training
-	docker exec -it `docker ps -aqf "name=sravz_$(service)_1"` sh
+	docker exec -it `docker ps -aqf "name=training_$(service)_1"` sh
