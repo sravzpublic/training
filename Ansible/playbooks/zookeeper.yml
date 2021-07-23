@@ -1,4 +1,0 @@
----
-- hosts: sravzzookeeper
-  roles:
-     - { role: zookeeper }

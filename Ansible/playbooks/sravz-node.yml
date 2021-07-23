@@ -1,4 +1,0 @@
----
-- hosts: sravznode
-  roles:
-     - { role: sravz.node }

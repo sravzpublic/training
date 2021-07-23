@@ -1,7 +1,0 @@
----
-
-- name: Install Zookeeper
-  include: build.yml
-  tags:
-    - build
-

@@ -1,7 +1,0 @@
----
-add_admin_to_config_server: False
-# Mongodb.conf options
-mongodb:
-  security:
-    authorization: enabled
-

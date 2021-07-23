@@ -1,4 +1,0 @@
----
-touch_mongod_service: False
-touch_mongoc_service: False
-

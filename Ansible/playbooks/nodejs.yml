@@ -1,3 +1,0 @@
-- hosts: sravznodejs
-  roles:
-     - { role: geerlingguy.nodejs, become: yes}

@@ -1,5 +1,0 @@
----
-  - include: system_setup.yml
-    when: setup_system
-  - include: install_packages.yml
-    when: install_packages

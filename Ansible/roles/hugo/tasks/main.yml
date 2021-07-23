@@ -1,5 +1,0 @@
----
-- name: Install {{HUGO_URL}} package.
-  become: yes
-  apt:
-    deb: "{{HUGO_URL}}"

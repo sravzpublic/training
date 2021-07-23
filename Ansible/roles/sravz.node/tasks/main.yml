@@ -1,9 +1,0 @@
-# This role prepares the Sravz Node.
----
-#Windows Local
-  - import_tasks: setup_ubuntu.yml
-    when: ansible_os_family == "Debian"
-  - import_tasks: setup_portfolio_ubuntu.yml
-    when: ansible_os_family == "Debian"
-  - import_tasks: setup_analytics_ubuntu.yml
-    when: ansible_os_family == "Debian"

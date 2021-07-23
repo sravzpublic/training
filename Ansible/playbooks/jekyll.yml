@@ -1,4 +1,0 @@
----
-- hosts: sravzjekyll
-  roles:
-     - { role: jekyll }

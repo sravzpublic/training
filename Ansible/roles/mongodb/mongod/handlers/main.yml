@@ -1,8 +1,0 @@
----
-
-#- name: reload systemd
-#  become: yes
-#  systemd:
-#    state: restarted
-#    daemon_reload: yes
-#    name: "kafka_consumer@{{instance_name}}.service"
