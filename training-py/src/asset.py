@@ -1,14 +1,19 @@
 import datetime
-import traceback
-import uuid
+import json
 from functools import reduce
-from . import util
-from bson.objectid import ObjectId
-import numpy as np
+import util
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from src import logger
+import logger
+from dateutil.relativedelta import relativedelta
+
+
+def object_hook(obj):
+    _isoformat = obj.get('_isoformat')
+    if _isoformat is not None:
+        return datetime.datetime.fromisoformat(_isoformat)
+    return obj
 
 class engine(object):
     """Asset engine"""
@@ -18,13 +23,18 @@ class engine(object):
 
     def get_historical_price(self, sravzid):
         '''
-            ae = engine()
+            from src import asset            
+            ae = asset.engine()
             ae.get_historical_price('fut_gold')
         '''
-        data_df = pd.read_csv('{0}{1}.csv'.format(util.constants.DATA_FILE_LOCATION, sravzid), index_col=0)
-        data_df.index = pd.to_datetime(data_df.index)
-        data_df.index = data_df.index.date
-        return data_df
+        with open('{0}{1}.json'.format(util.constants.DATA_FILE_LOCATION, sravzid)) as json_file:
+            json_data = json.loads(json_file.read(), object_hook=object_hook)
+            data_df = pd.DataFrame(json_data)
+            # Set Date column as index
+            data_df = data_df.set_index('Date')
+            # Sort the price data in ascending order of date            
+            data_df = data_df.sort_index(ascending=True)
+            return data_df
 
     def get_assets(self, sravzids):
         data_dfs = []
@@ -42,7 +52,9 @@ class engine(object):
         data_df = data_df.sort_index(ascending=False)
         data_df.index = pd.to_datetime(data_df.index)
         data_df.index = data_df.index.date
+        data_df = data_df[data_df.index > datetime.datetime.now() - relativedelta(years=10)]
         return data_df
+
 
     def get_combined_charts(self, sravzids):
         data_df = self.get_assets(sravzids)
@@ -93,3 +105,7 @@ class engine(object):
                         x for x in df_to_plot.columns if key in x.lower()]))
 
         fig.show()
+
+if __name__ == '__main__':
+    ae = engine()
+    ae.get_historical_price('fut_gold')    

@@ -3,9 +3,9 @@ Created on Mar 6, 2017
 
 @author: admin
 '''
-import logging, platform, sys
+import logging, sys
 from logging.handlers import RotatingFileHandler
-from src.util import constants
+from util import constants
 
 class RotatingLogger(object):
 

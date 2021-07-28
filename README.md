@@ -45,6 +45,9 @@ $ ls
 docker-compose.yaml  Dockerfile  favicon.ico  Makefile  README.md  training-ansible  training-hugo  training-py
 ```
 
+# Open Visual Studio Code
+# Install Visual studio code insider version: https://code.visualstudio.com/insiders/
+
 
 [Sravz Documentation](https://docs.sravz.com/)
 [Sravz Website](https://sravz.com)

@@ -2,11 +2,12 @@ import pandas as pd
 import numpy as np
 import io, os
 import datetime, locale, uuid, re
+import pathlib
 
 class constants(object):
     """description of class"""
     LOG_LOCATION = os.environ.get('ENV_LOG_FILE_NAME') or "/tmp/sravz_jobs.log"
-    DATA_FILE_LOCATION = "{0}/data/".format(os.getcwd())
+    DATA_FILE_LOCATION = f"{pathlib.Path(__file__).parent.resolve()}/../data/"
 
     ChartsToDisplayAndAcceptedColumns = {
         # All lower case
@@ -15,6 +16,8 @@ class constants(object):
         'volume': ['volume'],
         'openinterest': ['openinterest']
     }
+
+    PRICE_COLUMN_TO_USE = "AdjustedClose"
 
 class Helper(object):
     '''

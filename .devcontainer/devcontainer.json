@@ -3,11 +3,13 @@
     "name": "training",
     "dockerComposeFile": "../docker-compose.yaml",
     "service": "training",
-    "workspaceFolder": "/workspace/",
+    "workspaceFolder": "/home/ubuntu/workspace",
     "shutdownAction": "none",
     "extensions": [
-        "golang.go",
-        "VisualStudioExptTeam.vscodeintellicode",
-        "ms-python.python"
-    ],
+		"golang.go",
+		"VisualStudioExptTeam.vscodeintellicode",
+		"ms-python.python",
+		"ms-toolsai.jupyter",
+		"jithurjacob.nbpreviewer"
+	],
 }
