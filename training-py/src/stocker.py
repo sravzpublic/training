@@ -90,7 +90,7 @@ def create_stocker_tear_sheet(sravz_id, chart_type, returns_df = None, number_of
 
 
     if chart_type == CHART_TYPE_EVALUATE_PREDICTION_WITH_CHANGE_POINT:
-        tickerAnalysis.changepoint_prior_scale = 0.5
+        tickerAnalysis.changepoint_prior_scale = 0.05
         try:
             details = tickerAnalysis.evaluate_prediction(ax = ax)
             i = 1
