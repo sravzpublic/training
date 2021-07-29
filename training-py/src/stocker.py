@@ -113,7 +113,7 @@ def create_stocker_tear_sheet(sravz_id, chart_type, returns_df = None, number_of
         except Exception:
             logger.logging.exception("Error plotting predict_future")
 
-    return fig
+    # return fig
 
 # Class for analyzing and (attempting) to predict future prices
 # Contains a number of visualizations and analysis methods
@@ -124,7 +124,7 @@ class Stocker():
 
         self.symbol = asset_name
         stock = returns_df
-        stock['y'] = stock['Last']
+        stock['y'] = stock['AdjustedClose']
 
         stock = stock[stock.index > util.Helper.get_n_years_back_date(number_of_years_back)]
         # Columns required for prophet

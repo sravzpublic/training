@@ -139,7 +139,7 @@ class engine(object):
             horizontalalignment='right'
         )
 
-    def get_scatter_plot_daily_return(self, sravzids):
+    def get_pca_analysis(self, sravzids):
         '''
         '''
         vertical_sections = 3
@@ -166,9 +166,6 @@ class engine(object):
         # Display variance explained by each Principal Component
         ax_first_pc_variance_explanation.bar(range(n_components), pca_dat.explained_variance_ratio_)
         ax_first_pc_variance_explanation.set_title('Variance explained by first {0} principal components'.format(n_components))
-
-        #plt.bar(range(n_components), pca_dat.explained_variance_ratio_)
-        #plt.title('Variance explained by first {0} principal components'.format(n_components))
 
         i = 1
         pc_vs_index_returns_pc1 = plt.subplot(gs[i, :])        
