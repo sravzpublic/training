@@ -2,6 +2,9 @@ Share Research And ViZualize [Sravz](https://sravz.com) is an analytics platform
 
 ### [Sravz Training YouTube Playlist](https://youtu.be/vFtlOtXPo5s)
 
+### Install Visual studio code insider version - https://code.visualstudio.com/insiders/
+VS Code insider verion support jupyter notebooks
+
 ### Start srarvz training docker container
 ```bash
 # Run make to see the list of available commands
@@ -44,10 +47,6 @@ $ cd workspace
 $ ls
 docker-compose.yaml  Dockerfile  favicon.ico  Makefile  README.md  training-ansible  training-hugo  training-py
 ```
-
-# Open Visual Studio Code
-# Install Visual studio code insider version: https://code.visualstudio.com/insiders/
-
 
 [Sravz Documentation](https://docs.sravz.com/)
 [Sravz Website](https://sravz.com)
