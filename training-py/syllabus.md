@@ -1,4 +1,4 @@
-10 Classes covers these topics:
+10 Classes cover these topics:
 - Python Basics
 - Python Data Structures
 - Python Dev Env set up in docker/ipython notebook
