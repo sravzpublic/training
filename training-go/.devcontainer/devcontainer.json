@@ -3,29 +3,23 @@
     "name": "training-go",
     "dockerComposeFile": "../../docker-compose.yaml",
     "service": "training-go",
-    "workspaceFolder": "/workspace/training-go/src/sravz.com/sravz/",
+    "workspaceFolder": "/workspace/training-go/",
     "shutdownAction": "none",
-    "extensions": [
-        "golang.go",
-        "VisualStudioExptTeam.vscodeintellicode"
-    ],
-    "settings": {
-        // Configure tool-specific properties.
-        "customizations": {
-            // Configure properties specific to VS Code.
-            "vscode": {
-                // Set *default* container specific settings.json values on container create.
-                "settings": {
-                    "go.toolsManagement.checkForUpdates": "local",
-                    "go.useLanguageServer": true,
-                    "go.gopath": "/go",
-                    "go.goroot": "/usr/local/go"
-                },
-                // Add the IDs of extensions you want installed when the container is created.
-                "extensions": [
-                    "golang.Go"
-                ]
-            }
-        },
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            // Set *default* container specific settings.json values on container create.
+            "settings": {
+                "go.toolsManagement.checkForUpdates": "local",
+                "go.useLanguageServer": true,
+                "go.gopath": "/go",
+                "go.goroot": "/usr/local/go"
+            },
+            // Add the IDs of extensions you want installed when the container is created.
+            "extensions": [
+                "golang.go",
+                "VisualStudioExptTeam.vscodeintellicode"
+            ]
+        }
     }
 }

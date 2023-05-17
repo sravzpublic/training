@@ -108,7 +108,7 @@ services:
       - traefik.enable=false
 
   training-go:
-    image: golang:alpine
+    image: public.ecr.aws/sravz/sravz/backend-go:v62
     env_file:
       - .env
     environment:
@@ -120,7 +120,7 @@ services:
     command: tail -F anything
     volumes:
       - ~/.aws:/home/ubuntu/.aws:ro
-      - ./:/home/ubuntu/workspace
+      - ./:/workspace
     restart: always
     networks:
       - training
