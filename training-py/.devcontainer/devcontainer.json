@@ -1,8 +1,8 @@
 //devcontainer.json
 {
-    "name": "training",
-    "dockerComposeFile": "../docker-compose.yaml",
-    "service": "training",
+    "name": "backend-py",
+    "dockerComposeFile": "../../docker-compose.yaml",
+    "service": "backend-py",
     "workspaceFolder": "/home/ubuntu/workspace",
     "shutdownAction": "none",
     "extensions": [

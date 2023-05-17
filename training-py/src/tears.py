@@ -41,7 +41,7 @@ except ImportError:
     warnings.warn("Could not import bayesian submodule due to missing pymc3 dependency.", ImportWarning)
     have_bayesian = False
 
-@plotting_context
+# @plotting_context
 def create_returns_tear_sheet(returns, positions=None,
                               live_start_date=None,
                               cone_std=(1.0, 1.5, 2.0),
@@ -329,3 +329,15 @@ def get_rolling_stats(price_df, sravzid, return_fig=True):
     mpl_table.set_fontsize(font_size)
     ax_df.set_title("{0} {1} Price - Dickey Fuller Test".format(sravzid, col))
 
+
+
+if __name__ == '__main__':
+    import os, sys, pathlib
+    sys.path.append(f"{pathlib.Path(__file__).parent.resolve()}/..")
+    from src import asset, portfolio
+
+    ae = asset.engine()
+    pe = portfolio.engine()
+    asset_returns = pe.get_percent_daily_returns(['fut_gold'])
+    benchmark_returns = pe.get_percent_daily_returns(['idx_us_spx'])    
+    create_returns_tear_sheet(asset_returns.squeeze(), benchmark_rets=benchmark_returns.squeeze(), return_fig = True, sravzid = 'fut_gold')

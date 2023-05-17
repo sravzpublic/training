@@ -82,7 +82,7 @@ services:
 #     labels:
 #       - traefik.enable=false
 
-  training:
+  training-py:
     image: public.ecr.aws/b8h3z2a1/sravz/training:${SRAVZ_TRAINING_VERSION}
     env_file:
       - .env
@@ -106,3 +106,26 @@ services:
       - training
     labels:
       - traefik.enable=false
+
+  training-go:
+    image: golang:alpine
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=local
+      - NSQ_HOST=nsqd
+      - NSQ_LOOKUPD_HOST=nsqlookupd
+      - MONGOLAB_URI=mongodb://sravz:sravz@mongo:27017/sravz
+      - MONGOLAB_SRAVZ_HISTORICAL_URI=mongodb://sravz_historical:sravz_historical@mongo:27017/sravz_historical
+    command: tail -F anything
+    volumes:
+      - ~/.aws:/home/ubuntu/.aws:ro
+      - ./:/home/ubuntu/workspace
+    restart: always
+    networks:
+      - training
+    labels:
+      - traefik.enable=false
+
+
+
