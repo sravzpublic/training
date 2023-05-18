@@ -10,6 +10,27 @@ go mod tidy
 go mod vendor
 ```
 
+### Install Air. Air allows live reload of golang code
+```
+f119f4c1ff41:/workspace/training-go# go install github.com/cosmtrek/air@latest
+go: downloading github.com/cosmtrek/air v1.43.0
+...
+go: downloading google.golang.org/protobuf v1.28.1
+
+f119f4c1ff41:/workspace/training-go# air
+
+  __    _   ___  
+ / /\  | | | |_) 
+/_/--\ |_| |_| \_ , built with Go 
+
+watching .
+!exclude tmp
+!exclude vendor
+building...
+running...
+2023/05/17 18:25:05 Server listening at localhost:8081
+```
+
 ### Run
 ```
 $ make run

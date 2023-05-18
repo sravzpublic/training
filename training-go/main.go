@@ -9,6 +9,8 @@ import (
 	"os/signal"
 	"strings"
 	"time"
+	"training-go/pkg/background"
+	"training-go/pkg/crypto"
 
 	"github.com/gorilla/mux"
 )
@@ -20,11 +22,11 @@ func main() {
 	flag.StringVar(&symbols, "symbols", "ETHBTC,BTCUSDC", "Comma separted symbols list")
 	flag.Parse()
 
-	Cryptos = make(map[string]Crypto)
-	Symbols = strings.Split(symbols, ",") // []string{"ETHBTC", "BTCUSDC"}
+	crypto.Cryptos = make(map[string]crypto.Crypto)
+	crypto.Symbols = strings.Split(symbols, ",") // []string{"ETHBTC", "BTCUSDC"}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/currency/{symbol}", GetCrypto).Methods("GET")
+	r.HandleFunc("/currency/{symbol}", crypto.GetCrypto).Methods("GET")
 
 	srv := &http.Server{
 		Addr:         "0.0.0.0:8081",
@@ -41,6 +43,9 @@ func main() {
 			log.Println(err)
 		}
 	}()
+
+	// Set up cron job
+	background.Background()
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)

@@ -1,12 +1,9 @@
-package main
+package crypto
 
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/mux"
 )
@@ -23,6 +20,7 @@ type Crypto struct {
 	FeeCurrency        string `json:"fee_currency"`
 	MarginTrading      bool   `json:"margin_trading"`
 	MaxInitialLeverage string `json:"max_initial_leverage"`
+	DateTime           string `json:"datetime"`
 }
 
 // Cryptos var as a slice Crypto struct
@@ -32,32 +30,6 @@ var Symbols []string
 // GetCrypto gets a Crypto
 func GetCrypto(w http.ResponseWriter, r *http.Request) {
 	// https://api.hitbtc.com/api/3/public/symbol/BTCUSDC
-	for _, v := range Symbols {
-		log.Println("Processing symbol: ", v)
-		response, err := http.Get(fmt.Sprintf("https://api.hitbtc.com/api/3/public/symbol/%s", v))
-
-		if err != nil {
-			fmt.Print(err.Error())
-			os.Exit(1)
-		}
-
-		responseData, err := ioutil.ReadAll(response.Body)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(string(responseData))
-
-		bytes := []byte(responseData)
-		var res Crypto
-		err = json.Unmarshal(bytes, &res)
-
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println("Update quote for: ", res.FeeCurrency)
-		Cryptos[v] = res
-	}
-
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r) // Gets params
 

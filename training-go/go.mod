@@ -1,4 +1,4 @@
-module toy_poc
+module training-go
 
 go 1.16
 
