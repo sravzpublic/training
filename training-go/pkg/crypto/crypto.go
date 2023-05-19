@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"training-go/pkg/config"
 
 	"github.com/gorilla/mux"
 )
@@ -29,6 +30,9 @@ var Symbols []string
 
 // GetCrypto gets a Crypto
 func GetCrypto(w http.ResponseWriter, r *http.Request) {
+	// Log request
+	config.GetConfig().LogChannel <- "Request received"
+
 	// https://api.hitbtc.com/api/3/public/symbol/BTCUSDC
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r) // Gets params

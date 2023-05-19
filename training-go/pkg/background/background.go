@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"training-go/pkg/config"
 	"training-go/pkg/crypto"
 )
 
@@ -15,7 +16,7 @@ func GetTickers() {
 	c := make(chan crypto.Crypto, len(crypto.Symbols))
 	for _, v := range crypto.Symbols {
 		go func(v string) {
-			log.Println("Processing symbol: ", v)
+			// log.Println("Processing symbol: ", v)
 			response, err := http.Get(fmt.Sprintf("https://api.hitbtc.com/api/3/public/symbol/%s", v))
 
 			if err != nil {
@@ -27,7 +28,7 @@ func GetTickers() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			fmt.Println(string(responseData))
+			// fmt.Println(string(responseData))
 
 			bytes := []byte(responseData)
 			res := crypto.Crypto{DateTime: time.Now().String()}
@@ -36,22 +37,32 @@ func GetTickers() {
 			if err != nil {
 				panic(err)
 			}
-			log.Println("Sending to channel: ", res)
+			// log.Println("Sending to channel: ", res)
 			c <- res
 		}(v)
 	}
 
 	for _, v := range crypto.Symbols {
 		res := <-c
-		log.Println("Received from channel: ", res)
+		// log.Println("Received from channel: ", res)
 		crypto.Cryptos[v] = res
 	}
 }
+
 func Background() {
 	// Set up cron job
 	GetTickers()
 	ticker := time.NewTicker(10 * time.Second)
-	for range ticker.C {
-		GetTickers()
-	}
+	go func() {
+		for range ticker.C {
+			GetTickers()
+		}
+	}()
+
+	// Sets up logger
+	go func() {
+		for message := range config.GetConfig().LogChannel {
+			fmt.Println("Message in the logger: ", message)
+		}
+	}()
 }
