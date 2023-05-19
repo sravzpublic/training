@@ -10,7 +10,9 @@ import (
 	"strings"
 	"time"
 	"training-go/pkg/background"
+	"training-go/pkg/config"
 	"training-go/pkg/crypto"
+	"training-go/pkg/db"
 
 	"github.com/gorilla/mux"
 )
@@ -27,6 +29,8 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/currency/{symbol}", crypto.GetCrypto).Methods("GET")
+	r.HandleFunc("/db/", db.GetData).Methods("GET")
+	config.AppInstance.Router = r
 
 	srv := &http.Server{
 		Addr:         "0.0.0.0:8081",

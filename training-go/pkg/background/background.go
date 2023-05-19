@@ -62,7 +62,7 @@ func Background() {
 	// Sets up logger
 	go func() {
 		for message := range config.GetConfig().LogChannel {
-			fmt.Println("Message in the logger: ", message)
+			fmt.Println("Message in the logger", message)
 		}
 	}()
 }
