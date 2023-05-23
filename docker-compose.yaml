@@ -127,5 +127,20 @@ services:
     labels:
       - traefik.enable=false
 
+  training-cpp:
+    image: public.ecr.aws/sravz/sravz/backend-cpp:v14
+    env_file:
+      - .env
+      - .secrets.env
+    environment:
+      - NODE_ENV=vagrant
+      - NSQ_HOST=nsqd-1:4150,nsqd-2:4150,nsqd-3:4150
+      - NSQ_LOOKUPD_HOST=nsqlookupd-1:4161,nsqlookupd-2:4161,nsqlookupd-3:4161
+      - MONGOLAB_URI=mongodb://sravz:sravz@mongo:27017/sravz
+      - MONGOLAB_SRAVZ_HISTORICAL_URI=mongodb://sravz_historical:sravz_historical@mongo:27017/sravz_historical
+    volumes:
+      - ~/.aws:/home/airflow/.aws:ro
+      - ./:/workspace
+    restart: always
 
 

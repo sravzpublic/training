@@ -221,3 +221,6 @@ _site
 .jekyll-cache
 .ipynb_checkpoints
 /training-go/tmp/main
+.secrets.env
+/training-cpp/build
+/training-cpp/dist

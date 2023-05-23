@@ -1,0 +1,22 @@
+//devcontainer.json
+{
+    "name": "training-cpp",
+    "dockerComposeFile": "../../docker-compose-localhost.yaml",
+    "service": "training-cpp",
+    "workspaceFolder": "/workspace/training-cpp",
+    "shutdownAction": "none",
+    "customizations": {
+      // Configure properties specific to VS Code.
+      "vscode": {
+        // Add the IDs of extensions you want installed when the container is created.
+        "extensions": [
+          "ms-vscode.cpptools",
+          "VisualStudioExptTeam.vscodeintellicode",
+          "ms-vscode.cmake-tools",
+          "ms-vscode.cpptools-extension-pack",
+          "rangav.vscode-thunder-client",
+          "ms-vscode.cpptools-extension-pack"
+          ]
+    }    
+  }
+}

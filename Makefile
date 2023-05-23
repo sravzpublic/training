@@ -4,10 +4,19 @@
 .EXPORT_ALL_VARIABLES:
 # Update
 SRAVZ_REPO_LOCATION=$(PWD)
+ENV_VAR_SECRET_FILE=.secrets.env
+# Do not update`
+# Export secrets
+include $(ENV_VAR_SECRET_FILE)
+export $(shell sed 's/=.*//' $(ENV_VAR_SECRET_FILE))
+ENV_VAR_FILE=.env
+include $(ENV_VAR_FILE)
+export $(shell sed 's/=.*//' $(ENV_VAR_FILE))
+export RUN_TIMESTAMP=$(shell date "+%Y%m%d_%H%M%S")
 
 # Docker image versions
 export SRAVZ_TRAINING_VERSION=v1
-
+export BACKEND_CPP_IMAGE_Version=v14
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
