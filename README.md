@@ -1,8 +1,13 @@
 Share Research And ViZualize [Sravz](https://sravz.com) is an analytics platform for smart investments.
 
-### [Sravz Training YouTube Playlist](https://youtu.be/vFtlOtXPo5s)
+### Documentation
+[Sravz Tech Documentation](https://docs.sravz.com/docs/tech/)  
 
-### Install Visual studio code insider version - https://code.visualstudio.com/insiders/
+### Course Vidoes 
+[Sravz Training YouTube Playlist](https://youtu.be/vFtlOtXPo5s)
+
+### IDE 
+[Install Visual studio code insider version](https://code.visualstudio.com/insiders/)
 VS Code insider verion support jupyter notebooks
 
 ### Start srarvz training docker container
@@ -48,6 +53,19 @@ $ ls
 docker-compose.yaml  Dockerfile  favicon.ico  Makefile  README.md  training-ansible  training-hugo  training-py
 ```
 
-[Sravz Website](https://sravz.com)
-[Sravz Documentation](https://docs.sravz.com/)
-[Sravz Jobs](https://jobs.sravz.com)
+### Links
+| Description      | Link |
+| ----------- | ----------- |
+| Sravz Analytics Platform      | [Sravz Website](https://sravz.com)       |
+| Sravz General Documentation   | [Sravz Documentation](https://docs.sravz.com/)        |
+| Sravz Tech Documentation   | [Sravz Tech Documentation](https://docs.sravz.com/docs/tech/)        |
+| Sravz Recruitment Services   | [Sravz Jobs](https://jobs.sravz.com)        |
+
+
+
+
+
+
+
+
+

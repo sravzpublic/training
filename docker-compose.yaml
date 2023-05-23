@@ -108,7 +108,7 @@ services:
       - traefik.enable=false
 
   training-go:
-    image: public.ecr.aws/sravz/sravz/backend-go:v62
+    image: sravzpublic/backend-go:v62
     env_file:
       - .env
     environment:
@@ -128,7 +128,7 @@ services:
       - traefik.enable=false
 
   training-cpp:
-    image: public.ecr.aws/sravz/sravz/backend-cpp:v14
+    image: sravzpublic/backend-cpp:v14
     env_file:
       - .env
       - .secrets.env
