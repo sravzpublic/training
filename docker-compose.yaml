@@ -128,7 +128,7 @@ services:
       - traefik.enable=false
 
   training-cpp:
-    image: sravzpublic/backend-cpp:v14
+    image: sravzpublic/backend-cpp:v15
     env_file:
       - .env
       - .secrets.env

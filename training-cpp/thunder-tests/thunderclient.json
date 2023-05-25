@@ -140,7 +140,7 @@
     "method": "GET",
     "sortNum": 11875,
     "created": "2023-05-05T04:32:57.084Z",
-    "modified": "2023-05-23T03:30:51.189Z",
+    "modified": "2023-05-25T02:50:18.447Z",
     "headers": [],
     "params": [
       {
@@ -185,6 +185,84 @@
     "auth": {
       "type": "bearer",
       "bearer": "{{Bearer}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "233f5dac-717c-4482-a876-d5c07244bff8",
+    "colId": "d66da45a-4634-48ee-b33d-41b61fc1d10b",
+    "containerId": "",
+    "name": "GET-S3-Select-Quotes-Stats-Staging",
+    "url": "https://quotesstaging.sravz.com/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+    "method": "GET",
+    "sortNum": 12031.3,
+    "created": "2023-05-25T02:25:18.232Z",
+    "modified": "2023-05-25T03:54:31.289Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "bucket",
+        "value": "sravz-data",
+        "isPath": false
+      },
+      {
+        "name": "key",
+        "value": "historical/quotes_stats.parquet",
+        "isPath": false
+      },
+      {
+        "name": "column",
+        "value": "sravz_id",
+        "isPath": false
+      },
+      {
+        "name": "in_clause",
+        "value": "stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{Bearer-Staging}}"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0efe5e27-504e-4129-bd0e-d680622bf9f1",
+    "colId": "d66da45a-4634-48ee-b33d-41b61fc1d10b",
+    "containerId": "",
+    "name": "GET-S3-Select-Quotes-Stats-Prod",
+    "url": "https://quotes.sravz.com/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+    "method": "GET",
+    "sortNum": 12109.4,
+    "created": "2023-05-25T04:04:04.432Z",
+    "modified": "2023-05-25T04:38:33.890Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "bucket",
+        "value": "sravz-data",
+        "isPath": false
+      },
+      {
+        "name": "key",
+        "value": "historical/quotes_stats.parquet",
+        "isPath": false
+      },
+      {
+        "name": "column",
+        "value": "sravz_id",
+        "isPath": false
+      },
+      {
+        "name": "in_clause",
+        "value": "stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "{{Bearer-Production}}"
     },
     "tests": []
   }

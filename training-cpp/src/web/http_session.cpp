@@ -227,10 +227,27 @@ handle_request(
         return res;
     };
 
-    // Respond to HEAD request and health check
-    if(req.method() == http::verb::head || path == "/health")
+    if(req.method() == http::verb::head)
     {
         return boost::make_optional<http::message_generator>(head_response());
+    }
+
+    // Respond to HEAD request and health check
+    auto const health_check_response =
+    [&req, &size, &path]()
+    {
+        http::response<http::string_body> res{http::status::ok, req.version()};
+        res.set(http::field::server, BOOST_BEAST_VERSION_STRING);
+        res.set(http::field::content_type, "text/html");
+        res.keep_alive(req.keep_alive());
+        res.body() = "Ok";
+        res.prepare_payload();
+        return res;
+    };
+
+    if(path == "/health")
+    {
+        return boost::make_optional<http::message_generator>(health_check_response());
     }
 
     // Let the background worker generate the response
