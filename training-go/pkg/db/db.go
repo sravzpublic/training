@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"sync"
+
+	"github.com/sravzpublic/training/training-go/pkg/config"
 )
 
 type DBData struct {
@@ -14,6 +16,7 @@ type DBData struct {
 }
 
 func GetData(w http.ResponseWriter, r *http.Request) {
+	config.GetConfig().ContollerTracker <- "DBContoller called!!!"
 	var wg sync.WaitGroup
 	var dbData DBData
 	for i := 1; i <= 3; i++ {

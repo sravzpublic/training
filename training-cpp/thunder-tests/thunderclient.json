@@ -232,11 +232,11 @@
     "colId": "d66da45a-4634-48ee-b33d-41b61fc1d10b",
     "containerId": "",
     "name": "GET-S3-Select-Quotes-Stats-Prod",
-    "url": "https://quotes.sravz.com/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+    "url": "https://quotes.sravz.com/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_aapl,stk_us_acn,stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
     "method": "GET",
     "sortNum": 12109.4,
     "created": "2023-05-25T04:04:04.432Z",
-    "modified": "2023-05-25T04:38:33.890Z",
+    "modified": "2023-05-30T03:57:32.028Z",
     "headers": [],
     "params": [
       {
@@ -256,7 +256,7 @@
       },
       {
         "name": "in_clause",
-        "value": "stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
+        "value": "stk_us_aapl,stk_us_acn,stk_us_zm,stk_us_mmm,stk_us_nvda,stk_us_extr,stk_us_goog,stk_us_amd",
         "isPath": false
       }
     ],

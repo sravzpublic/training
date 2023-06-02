@@ -8,8 +8,9 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"training-go/pkg/config"
-	"training-go/pkg/crypto"
+
+	"github.com/sravzpublic/training/training-go/pkg/config"
+	"github.com/sravzpublic/training/training-go/pkg/crypto"
 )
 
 func GetTickers() {
@@ -62,7 +63,20 @@ func Background() {
 	// Sets up logger
 	go func() {
 		for message := range config.GetConfig().LogChannel {
-			fmt.Println("Message in the logger", message)
+			log.Println("Message in the logger", message)
 		}
 	}()
+
+	// Stateful goroutine
+	go func() {
+		for {
+			select {
+			case msg := <-config.GetConfig().MiddleWareTracker:
+				log.Println("MiddleWareTracker: ", msg)
+			case msg := <-config.GetConfig().ContollerTracker:
+				log.Println("ControllerTracker: ", msg)
+			}
+		}
+	}()
+
 }

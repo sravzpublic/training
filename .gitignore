@@ -224,3 +224,4 @@ _site
 .secrets.env
 /training-cpp/build
 /training-cpp/dist
+/training-go/vendor/**
