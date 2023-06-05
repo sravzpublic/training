@@ -50,6 +50,7 @@ func GetTickers() {
 	}
 }
 
+// go routines and channels discussion
 func Background() {
 	// Set up cron job
 	GetTickers()
@@ -75,6 +76,8 @@ func Background() {
 				log.Println("MiddleWareTracker: ", msg)
 			case msg := <-config.GetConfig().ContollerTracker:
 				log.Println("ControllerTracker: ", msg)
+				//default:
+				//	log.Println("No middleware is ready")
 			}
 		}
 	}()
