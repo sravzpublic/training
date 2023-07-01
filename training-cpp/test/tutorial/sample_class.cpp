@@ -26,3 +26,18 @@ Shape Shape::rectangle(int len, int breadth) {
     return Shape(len, breadth);
 }
 
+std::string const Shape::s = "Hello world"; // Non int, non compile time const initialization
+
+// inline Matrix::Matrix(int rows, int cols):rows_(rows),cols_(cols) {
+//     data_ = new int[rows_*cols_];
+// }
+
+// inline Matrix::~Matrix() {
+//     delete[] data_;
+// }
+
+
+// inline int Matrix::operator()(int rows, int cols) {
+//     return data_[rows*cols+cols];
+// }
+

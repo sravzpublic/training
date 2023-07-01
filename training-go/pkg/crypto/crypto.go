@@ -13,6 +13,7 @@ type InsturmentSettlementType struct {
 	Type string
 }
 
+// List of methods
 type Instrument interface {
 	GetSettlementType() string
 	GetType() string

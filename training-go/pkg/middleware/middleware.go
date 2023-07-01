@@ -21,7 +21,7 @@ func LoggingMiddleware(next http.Handler) http.Handler {
 func RateLimitterMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println("RateLimitterMiddleware")
-		<-config.GetConfig().Limiter
+		<-config.GetConfig().Limiter // Blocking call, blocks for every 1 ms
 		config.GetConfig().MiddleWareTracker <- "RateLimitterMiddleware called!"
 		next.ServeHTTP(w, r)
 	})

@@ -13,7 +13,9 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/sravzpublic/training/training-go/pkg/asset"
 	"github.com/sravzpublic/training/training-go/pkg/background"
+	"github.com/sravzpublic/training/training-go/pkg/collections"
 	"github.com/sravzpublic/training/training-go/pkg/config"
 	"github.com/sravzpublic/training/training-go/pkg/crypto"
 	"github.com/sravzpublic/training/training-go/pkg/db"
@@ -70,25 +72,32 @@ func main() {
 	background.Background()
 
 	// Usage of interface and struct
-	var instruments = [...]crypto.Instrument{&crypto.Crypto{Type: "Crypto",
-		InsturmentSettlementType: crypto.InsturmentSettlementType{
+	var instruments = [...]crypto.Instrument{
+		&crypto.Crypto{Type: "Crypto", InsturmentSettlementType: crypto.InsturmentSettlementType{
 			Type: "Cash",
-		}}, &crypto.Future{
-		Type: "Future",
-		InsturmentSettlementType: crypto.InsturmentSettlementType{
-			Type: "Physical",
-		},
-	}}
+		}},
+		&crypto.Future{Type: "Future",
+			InsturmentSettlementType: crypto.InsturmentSettlementType{
+				Type: "Physical",
+			},
+		}}
 	for _, i := range instruments {
 		log.Println("This is the instrument ID: ", i.GetType(), " Settlement type: ", i.GetSettlementType())
 	}
 
-	// Usage of Generics
+	// Usage of struct - create a linked list
+	collections.Collection()
+
+	// Generics Usage
+	asset.Print(1)
+	asset.Print(1.0)
 	futures.PrintFutures(futures.FuturesChain)
-	// Use compare function
+	// Usage of compare function
 	fmt.Println("Comparing two futures", futures.Compare(futures.FuturesChain[0], futures.FuturesChain[1]))
 
+	// Context usage
 	c := make(chan os.Signal, 1)
+	// ctrl + c = sigint
 	signal.Notify(c, os.Interrupt)
 	<-c
 	ctx, cancel := context.WithTimeout(context.Background(), wait)

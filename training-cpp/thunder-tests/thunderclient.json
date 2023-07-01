@@ -136,11 +136,11 @@
     "colId": "d66da45a-4634-48ee-b33d-41b61fc1d10b",
     "containerId": "",
     "name": "GET-S3-Select-Quotes-Stats",
-    "url": "http://localhost:8080/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_extr,stk_us_goog,stk_us_amd",
+    "url": "http://localhost:5000/s3?bucket=sravz-data&key=historical/quotes_stats.parquet&column=sravz_id&in_clause=stk_us_extr,stk_us_goog,stk_us_amd",
     "method": "GET",
     "sortNum": 11875,
     "created": "2023-05-05T04:32:57.084Z",
-    "modified": "2023-05-25T02:50:18.447Z",
+    "modified": "2023-06-22T02:15:07.356Z",
     "headers": [],
     "params": [
       {

@@ -70,7 +70,18 @@ $ curl localhost:8080/currency/TEST
 "Unsupported symbol: Supported Systems: [ETHBTC BTCUSDC]"
 ```
 
-# Get invalid symbol
+### Get invalid symbol
+```bash
 $ curl localhost:8080/currency/TEST
 "Unsupported symbol: Supported Systems: [ETHBTC BTCUSDC]"
+```
+
+## MongodDB
+#### After adding mongo dependency run go mod tidy and go mod vendor
+```bash
+6488fc3b02ce:/workspace/training-go# go mod tidy
+...
+go: downloading github.com/xdg-go/pbkdf2 v1.0.0
+6488fc3b02ce:/workspace/training-go# go mod vendor
+6488fc3b02ce:/workspace/training-go# 
 ```

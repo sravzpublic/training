@@ -7,6 +7,8 @@
 #include "main.hpp"
 #include "singleton.hpp"
 #include "sample_stl.hpp"
+#include "static1.hpp"
+#include "static2.hpp"
 
 using namespace std;
 
@@ -53,5 +55,23 @@ int main() {
     }
     // STL Usage
     // Sort array
+    std::cout << "Array sort test" << std::endl;
     sort_array();
+
+    // Assignment operator test
+    // Derived class assignment operator is not called until explicitly called
+    std::cout << "Derived call assignment operator test" << std::endl;
+    {
+        SampleDerivedAssignmentOperator sdao1;
+        SampleDerivedAssignmentOperator sdao2;
+        sdao2 = sdao1;
+    }
+
+    // Operator overloading: atleast one type should be a class/user defined time.
+    // Cannot operator overload == on char since that will not include atleast 1 user defined type
+    std::cout << "Matrix usage:" << std::endl;
+    {
+        Matrix m(2,2);
+        // std::cout << m(1,2);
+    }
 } 

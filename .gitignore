@@ -225,3 +225,4 @@ _site
 /training-cpp/build
 /training-cpp/dist
 /training-go/vendor/**
+**/docker_volume/**

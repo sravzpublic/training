@@ -55,7 +55,7 @@ docker-compose: docker-use-default-context## Run docker compose action: make doc
 	fi
 
 docker-compose-tail-logs: docker-use-default-context ## Tails docker logs: make docker-compose-tail-logs service=training
-	docker-compose logs -f --tail=10 $(service)
+	docker compose logs -f --tail=10 $(service)
 
 docker-exec: ## Exec into a docker container: make docker-exec service=training
 	docker exec -it `docker ps -aqf "name=training_$(service)_1"` sh

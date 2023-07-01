@@ -1,30 +1,14 @@
 version: "3.9"
-
-networks:
-  training:
-    external: false
-
 services:
-#   mongo:
-#       image: mongo
-#       env_file: .env
-#       environment:
-#           - MONGO_INITDB1_DATABASE=sravz
-#           - MONGO_INITDB1_USERNAME=sravz
-#           - MONGO_INITDB1_PASSWORD=sravz
-#           - MONGO_INITDB2_DATABASE=sravz_historical
-#           - MONGO_INITDB2_USERNAME=sravz_historical
-#           - MONGO_INITDB2_PASSWORD=sravz_historical
-#       ports:
-#         - 27017:27017
-#       volumes:
-#         - ./docker_volume/mongo_data:/data/db
-#         - ./docker_volume/mongo_dump:/var/mongo_dump
-#         - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
-#       networks:
-#         - training
-#       labels:
-#         - traefik.enable=false
+  mongo:
+    image: mongo
+    env_file: .env
+    ports:
+      - 27018:27017
+    volumes:
+      - ./docker_volume/mongo_data:/data/db
+      - ./docker_volume/mongo_dump:/var/mongo_dump
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh
 
 #   mongo-express:
 #       image: mongo-express
@@ -43,44 +27,6 @@ services:
 #         - training
 #       labels:
 #         - traefik.enable=false
-
-#   nsqlookupd:
-#     image: nsqio/nsq
-#     ports:
-#       - 4160:4160
-#       - 4161:4161
-#     command: /nsqlookupd
-#     networks:
-#       - training
-#     labels:
-#       - traefik.enable=false
-
-# #### IF CONNECTING FROM localhost to nsqd docker container add 127.0.0.1 nsqd to /etc/hosts on the host machine
-#   nsqd:
-#     image: nsqio/nsq
-#     ports:
-#       - 4150:4150
-#       - 4151:4151
-#     links:
-#       - nsqlookupd:nsqlookupd
-#     command: /nsqd -lookupd-tcp-address=nsqlookupd:4160 -broadcast-address=nsqd
-#     networks:
-#       - training
-#     labels:
-#       - traefik.enable=false
-
-#   nsqadmin:
-#     image: nsqio/nsq
-#     ports:
-#       - 4171:4171
-#     links:
-#       - nsqlookupd:nsqlookupd
-#       - nsqd:nsqd
-#     command: /nsqadmin -lookupd-http-address=nsqlookupd:4161
-#     networks:
-#       - training
-#     labels:
-#       - traefik.enable=false
 
   training-py:
     image: public.ecr.aws/b8h3z2a1/sravz/training:${SRAVZ_TRAINING_VERSION}
@@ -102,10 +48,6 @@ services:
     #   - nsqadmin
     #   - nsqd
     #   - mongo
-    networks:
-      - training
-    labels:
-      - traefik.enable=false
 
   training-go:
     image: sravzpublic/backend-go:v62
@@ -122,10 +64,6 @@ services:
       - ~/.aws:/home/ubuntu/.aws:ro
       - ./:/workspace
     restart: always
-    networks:
-      - training
-    labels:
-      - traefik.enable=false
 
   training-cpp:
     image: sravzpublic/backend-cpp:v15

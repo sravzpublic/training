@@ -9,7 +9,7 @@
     "data": [
       {
         "name": "Bearer",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NmVjZGU2NWY0Y2EyMGQ5ZmIwYWJlNSIsImlhdCI6MTY4NDk4MzI5MCwiZXhwIjoxNjg1MDY5NjkwfQ.Q4gENhmocP4meIKpDbCXniV3mPlZP83VLh_8yRHPZcE"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0Nzk1NWRhZDRhYzFkZmMyMDdjMjdlMyIsImlhdCI6MTY4NzQwMDI0OCwiZXhwIjoxNjg3NDg2NjQ4fQ.SOmm_AeB82cRO3q64IjTj_ZDC5xLGJ0Ep3lZUip3gTU"
       },
       {
         "name": "Bearer-Staging",
@@ -17,7 +17,7 @@
       },
       {
         "name": "Bearer-Production",
-        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMjQ3OTA1ZGNlMDdmNzVjMzg3NzU3ZiIsInJvbGUiOiJ1c2VyIiwic3VpZCI6Ijg3YjVmZmFlOGVlZDI4MmNlNmRmYzUxZjBjYjg1NjNjIiwiaWF0IjoxNjg1NjcxNTM1LCJleHAiOjE2ODU3NTc5MzV9.y4iZso2yaPBpKGa2vOyPbSV6fO_gc0rQo636JQiq-iE"
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmMjQ3OTA1ZGNlMDdmNzVjMzg3NzU3ZiIsInJvbGUiOiJ1c2VyIiwic3VpZCI6Ijg3YjVmZmFlOGVlZDI4MmNlNmRmYzUxZjBjYjg1NjNjIiwiaWF0IjoxNjg2ODUzOTA3LCJleHAiOjE2ODY5NDAzMDd9._O5RupRiVhSaxK-XZkx8jNWi-r4NHO2OR9OGbVfqRUg"
       }
     ]
   }

@@ -1,12 +1,18 @@
 package db
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/sravzpublic/training/training-go/pkg/config"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 type DBData struct {
@@ -46,4 +52,25 @@ func IntMin(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func init() {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://sravz:sravz@mongo:27017/sravz"))
+	_ = client.Ping(ctx, readpref.Primary())
+	log.Println("Pinged MongoDB")
+	defer func() {
+		if err = client.Disconnect(ctx); err != nil {
+			panic(err)
+		}
+	}()
+	collection := client.Database("testing").Collection("numbers")
+	ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	res, err := collection.InsertOne(ctx, bson.D{{Key: "name", Value: "pi"},
+		{Key: "value", Value: 3.14159}})
+	id := res.InsertedID
+	log.Println("Inserted document ID", id)
+
 }
