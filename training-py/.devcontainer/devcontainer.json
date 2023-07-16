@@ -5,11 +5,11 @@
     "service": "backend-py",
     "workspaceFolder": "/home/ubuntu/workspace",
     "shutdownAction": "none",
-    "extensions": [
-		"golang.go",
-		"VisualStudioExptTeam.vscodeintellicode",
-		"ms-python.python",
-		"ms-toolsai.jupyter",
-		"jithurjacob.nbpreviewer"
-	],
+    "customizations": {"vscode": {"extensions": [
+      "golang.go",
+      "VisualStudioExptTeam.vscodeintellicode",
+      "ms-python.python",
+      "ms-toolsai.jupyter",
+      "jithurjacob.nbpreviewer"
+    ]}}
 }

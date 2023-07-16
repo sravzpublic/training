@@ -11,7 +11,7 @@ from src import logger
 sb.set_style('darkgrid')
 
 def get_ts_data(sravzid, price_df, col):
-    vertical_sections = 9
+    vertical_sections = 17
     widthInch = 10
     heightInch = vertical_sections * 5
     fig = plt.figure(figsize=(widthInch, heightInch))
@@ -53,7 +53,7 @@ def get_ts_data(sravzid, price_df, col):
     lag_correlations = acf(price_df['Logged First Difference'].iloc[1:])
     ax_lag_correlation.plot(lag_correlations, marker='o', linestyle='--')
     ax_lag_correlation.set_title(
-        "{0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
+        "Complete Historical Data: {0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
 
     ax_lag_partial_auto_correlation = plt.subplot(gs[5, :])
     lag_partial_correlations = pacf(
@@ -61,10 +61,66 @@ def get_ts_data(sravzid, price_df, col):
     ax_lag_partial_auto_correlation.plot(
         lag_partial_correlations, marker='o', linestyle='--')
     ax_lag_partial_auto_correlation.set_title(
-        "{0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))
+        "Complete Historical Data: {0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))
 
+######
+    ax_lag_correlation_10yrs = plt.subplot(gs[6, :])
+    lag_correlations = acf(price_df['Logged First Difference'].last('10Y').iloc[1:])
+    ax_lag_correlation_10yrs.plot(lag_correlations, marker='o', linestyle='--')
+    ax_lag_correlation_10yrs.set_title(
+        "Last 10 yrs: {0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
+
+    ax_lag_partial_auto_correlation_10yrs = plt.subplot(gs[7, :])
+    lag_partial_correlations = pacf(
+        price_df['Logged First Difference'].last('10Y').iloc[1:])
+    ax_lag_partial_auto_correlation_10yrs.plot(
+        lag_partial_correlations, marker='o', linestyle='--')
+    ax_lag_partial_auto_correlation_10yrs.set_title(
+        "Last 10 yrs: {0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))
+    
+    ax_lag_correlation_5yrs = plt.subplot(gs[8, :])
+    lag_correlations = acf(price_df['Logged First Difference'].last('5Y').iloc[1:])
+    ax_lag_correlation_5yrs.plot(lag_correlations, marker='o', linestyle='--')
+    ax_lag_correlation_5yrs.set_title(
+        "Last 5 yrs: {0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
+
+    ax_lag_partial_auto_correlation_5yrs = plt.subplot(gs[9, :])
+    lag_partial_correlations = pacf(
+        price_df['Logged First Difference'].last('5Y').iloc[1:])
+    ax_lag_partial_auto_correlation_5yrs.plot(
+        lag_partial_correlations, marker='o', linestyle='--')
+    ax_lag_partial_auto_correlation_5yrs.set_title(
+        "Last 5 yrs: {0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))
+
+    ax_lag_correlation_2yrs = plt.subplot(gs[10, :])
+    lag_correlations = acf(price_df['Logged First Difference'].last('2Y').iloc[1:])
+    ax_lag_correlation_2yrs.plot(lag_correlations, marker='o', linestyle='--')
+    ax_lag_correlation_2yrs.set_title(
+        "Last 2 yrs: {0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
+
+    ax_lag_partial_auto_correlation_2yrs = plt.subplot(gs[11, :])
+    lag_partial_correlations = pacf(price_df['Logged First Difference'].last('2Y').iloc[1:])
+    ax_lag_partial_auto_correlation_2yrs = plt.subplot(gs[11, :]).plot(
+    lag_partial_correlations, marker='o', linestyle='--')
+    ax_lag_partial_auto_correlation_2yrs = plt.subplot(gs[11, :]).set_title(
+    "Last 2 yrs: {0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))        
+
+    ax_lag_correlation_1yrs = plt.subplot(gs[12, :])
+    lag_correlations = acf(price_df['Logged First Difference'].last('1Y').iloc[1:])
+    ax_lag_correlation_1yrs.plot(lag_correlations, marker='o', linestyle='--')
+    ax_lag_correlation_1yrs.set_title(
+        "Last 1 yrs: {0} {1} Price Logged First Difference Auto correlation Vs Lag Step".format(sravzid, col))
+
+    ax_lag_partial_auto_correlation_1yrs = plt.subplot(gs[13, :])
+    lag_partial_correlations = pacf(
+        price_df['Logged First Difference'].last('1Y').iloc[1:])
+    ax_lag_partial_auto_correlation_1yrs.plot(
+        lag_partial_correlations, marker='o', linestyle='--')
+    ax_lag_partial_auto_correlation_1yrs.set_title(
+        "Last 1 yrs: {0} {1} Price Logged First Difference Partial Auto correlation Vs Lag Step".format(sravzid, col))            
+######
     try:
-        ax_natual_log_vs_forecast = plt.subplot(gs[6, :])
+        ax_natual_log_vs_forecast = plt.subplot(gs[14, :])
         model = sm.tsa.ARIMA(price_df['Natural Log'].iloc[1:], order=(1, 0, 0))
         results = model.fit(disp=-1)
         price_df['Forecast'] = results.fittedvalues
@@ -74,7 +130,7 @@ def get_ts_data(sravzid, price_df, col):
         logger.logging.exception('ARIMR error')
 
     try:
-        ax_logged_first_difference_vs_forecast = plt.subplot(gs[7, :])
+        ax_logged_first_difference_vs_forecast = plt.subplot(gs[15, :])
         model = sm.tsa.ARIMA(
             price_df['Logged First Difference'].iloc[1:], order=(1, 0, 0))
         results = model.fit(disp=-1)
@@ -86,7 +142,7 @@ def get_ts_data(sravzid, price_df, col):
 
     try:
         ax_expoential_smooth_logged_first_difference_vs_forecast = plt.subplot(
-            gs[8, :])
+            gs[16, :])
         model = sm.tsa.ARIMA(
             price_df['Logged First Difference'].iloc[1:], order=(0, 0, 1))
         results = model.fit(disp=-1)
