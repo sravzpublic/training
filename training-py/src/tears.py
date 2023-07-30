@@ -255,11 +255,11 @@ def create_returns_tear_sheet(returns, positions=None,
 
 
 def get_rolling_stats(price_df, sravzid, return_fig=True):
-    price_df.columns = map(str.lower, price_df.columns)
+    # price_df.columns = map(str.lower, price_df.columns)
 
-    col = 'settle'
+    col = 'AdjustedClose'
 
-    vertical_sections = 5
+    vertical_sections = 9
     widthInch = 10
     heightInch = vertical_sections * 5
     fig = plt.figure(figsize=(widthInch, heightInch))
@@ -324,11 +324,28 @@ def get_rolling_stats(price_df, sravzid, return_fig=True):
     df_test_df = dfoutput.to_frame()
     mpl_table = ax_df.table(
         cellText=df_test_df.values, rowLabels=df_test_df.index, bbox=bbox, colLabels=df_test_df.index)
-    #mpl_table.set_xticklabels(corr_matrix.index, rotation=45)
     mpl_table.auto_set_font_size(False)
     mpl_table.set_fontsize(font_size)
-    ax_df.set_title("{0} {1} Price - Dickey Fuller Test".format(sravzid, col))
+    ax_df.set_title("{0} {1} Price - Augmented Dickey Fuller Test - Complete History".format(sravzid, col), loc="left")
 
+    for years in [10,5,2,1]:
+        chart_index = chart_index + 1
+        ax_df = plt.subplot(gs[chart_index, 1:])
+        series = price_df[col].last(f"{years}Y").dropna()
+        dftest = adfuller(series, regression='ctt', autolag='AIC')
+        dfoutput = pd.Series(dftest[0:4], index=[
+                            'Test Statistic', 'p-value', '#Lags Used', 'Number of Observations Used'])
+        for key, value in list(dftest[4].items()):
+            dfoutput['Critical Value (%s)' % key] = value
+        font_size = 14
+        bbox = [0, 0, 1, 1]
+        ax_df.axis('off')
+        df_test_df = dfoutput.to_frame()
+        mpl_table = ax_df.table(
+            cellText=df_test_df.values, rowLabels=df_test_df.index, bbox=bbox, colLabels=df_test_df.index)
+        mpl_table.auto_set_font_size(False)
+        mpl_table.set_fontsize(font_size)
+        ax_df.set_title("{0} {1} Price - Augmented Dickey Fuller Test - Last {2}Yrs".format(sravzid, col, years), loc="left")
 
 
 if __name__ == '__main__':
