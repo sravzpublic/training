@@ -52,7 +52,7 @@ class engine(object):
         data_df = data_df.sort_index(ascending=False)
         data_df.index = pd.to_datetime(data_df.index)
         data_df.index = data_df.index.date
-        data_df = data_df[data_df.index > datetime.datetime.now() - relativedelta(years=10)]
+        data_df = data_df[data_df.index > datetime.datetime.now().date() - relativedelta(years=10)]
         return data_df
 
 
