@@ -154,8 +154,7 @@ class engine(object):
 
         scatter_plot_df = self.get_percent_daily_returns(sravzids)
         _data = scatter_plot_df.replace([np.inf, -np.inf], np.nan).fillna(0)
-        # Set number of components to 2
-        n_components = 2
+        n_components = len(sravzids)
         # Create Principal Components Analysis object with number of expected components
         _p = PCA(n_components=n_components)
         # Fit the daily returns data to the N components
