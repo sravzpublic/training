@@ -96,11 +96,59 @@ func main() {
 	fmt.Println("Comparing two futures", futures.Compare(futures.FuturesChain[0], futures.FuturesChain[1]))
 
 	// Context usage
+	// TODO Context - Empty context
+	// https://pkg.go.dev/context
+	// Package context defines the Context type, which carries deadlines,
+	// cancellation signals, and other request-scoped values across
+	// API boundaries and between processes.
+	// The same Context may be passed to functions running in different goroutines;
+	// Contexts are safe for simultaneous use by multiple goroutines.
+	// Just an empty context - place holder
+	ctx := context.TODO()
+	util.EmptyContextFunction(ctx, "TODO")
+	// Same as TODO context but uses a background context. Use background when unsure.
+	ctx = context.Background()
+	util.EmptyContextFunction(ctx, "Background")
+	// Context with value
+	key1 := util.ContextKey("key1")
+	type Values struct {
+		m map[string]string
+	}
+	v := Values{map[string]string{
+		"1": "one",
+		"2": "two",
+	}}
+	ctxWithValue := context.WithValue(ctx, key1, v) // Best practice is to define our own type: will discuss later type key int or type ctxKey struct{}
+	util.EmptyContextFunction(ctxWithValue, "Context with value")
+	// Parent and child context
+	util.ParentContextFunction(ctxWithValue, "Context with value")
 	c := make(chan os.Signal, 1)
+	// Cancellable context
+	ctxWithCancel, cancel := context.WithCancel(context.Background())
+	dataCh := make(chan int)
+	util.CancellableContext(ctxWithCancel, dataCh)
+	dataCh <- 1
+	dataCh <- 2
+	dataCh <- 3
+	// Call done to the CancellableContext returns
+	cancel()
 	// ctrl + c = sigint
+	// Parent and child context
+	// Will deadline we have to specify the time from not into the future when the context has to close
+	deadline := time.Now().Add(2000 * time.Millisecond) // Timeout in 2 second
+	// Do work with-in the given time/deadline or exit/clean up
+	cxtWithDeadline, cancel := context.WithDeadline(ctx, deadline)
+	util.ContextWithDeadline(cxtWithDeadline, dataCh)
+	log.Println("Sleeping for 3 seconds")
+	time.Sleep(3000 * time.Millisecond) // Sleep for 3 seconds
+	cancel()
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, 2*time.Millisecond) // 2 seconds
+	util.ContextWithTimeout(ctxWithTimeout, dataCh)
+	cancel()
+	log.Println("Sleeping for 3 seconds")
 	signal.Notify(c, os.Interrupt)
 	<-c
-	ctx, cancel := context.WithTimeout(context.Background(), wait)
+	ctx, cancel = context.WithTimeout(context.Background(), wait)
 	srv.Shutdown(ctx)
 	log.Println("shutting down")
 

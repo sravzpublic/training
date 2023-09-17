@@ -58,6 +58,9 @@ func init() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://sravz:sravz@mongo:27017/sravz"))
+	if err != nil {
+		log.Println("Cannot connect to mongodb at mongodb://sravz:sravz@mongo:27017/sravz")
+	}
 	_ = client.Ping(ctx, readpref.Primary())
 	log.Println("Pinged MongoDB")
 	defer func() {
@@ -70,7 +73,9 @@ func init() {
 	defer cancel()
 	res, err := collection.InsertOne(ctx, bson.D{{Key: "name", Value: "pi"},
 		{Key: "value", Value: 3.14159}})
-	id := res.InsertedID
-	log.Println("Inserted document ID", id)
+	if err == nil {
+		id := res.InsertedID
+		log.Println("Inserted document ID", id)
+	}
 
 }
