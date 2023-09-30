@@ -69,7 +69,6 @@ services:
     image: sravzpublic/backend-cpp:v15
     env_file:
       - .env
-      - .secrets.env
     environment:
       - NODE_ENV=vagrant
       - NSQ_HOST=nsqd-1:4150,nsqd-2:4150,nsqd-3:4150
@@ -81,4 +80,11 @@ services:
       - ./:/workspace
     restart: always
 
-
+  redis:
+    image: redislabs/redismod
+    ports:
+      - '6389:6379'
+    entrypoint: redis-server /usr/local/etc/redis/redis.conf --loadmodule /usr/lib/redis/modules/redisgears.so Plugin /var/opt/redislabs/modules/rg/plugin/gears_python.so
+    volumes:
+      - ./docker_volume/redis_data/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./docker_volume/redis_data/redis:/data

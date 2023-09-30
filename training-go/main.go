@@ -20,6 +20,7 @@ import (
 	"github.com/sravzpublic/training/training-go/pkg/crypto"
 	"github.com/sravzpublic/training/training-go/pkg/db"
 	"github.com/sravzpublic/training/training-go/pkg/futures"
+	"github.com/sravzpublic/training/training-go/pkg/jobs"
 	"github.com/sravzpublic/training/training-go/pkg/middleware"
 	"github.com/sravzpublic/training/training-go/pkg/util"
 )
@@ -146,7 +147,12 @@ func main() {
 	util.ContextWithTimeout(ctxWithTimeout, dataCh)
 	cancel()
 	log.Println("Sleeping for 3 seconds")
+
 	signal.Notify(c, os.Interrupt)
+
+	jobs.ClientNew()
+	/* Wait for signal here */
+
 	<-c
 	ctx, cancel = context.WithTimeout(context.Background(), wait)
 	srv.Shutdown(ctx)
