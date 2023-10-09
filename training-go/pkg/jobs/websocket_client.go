@@ -169,7 +169,7 @@ func (conn *WebSocketClient) Connect() *websocket.Conn {
 // Listen to the messages on the websocket and write the quotes to redis
 func (conn *WebSocketClient) listen() {
 	conn.log("listen", nil, fmt.Sprintf("listen for the messages: %s", conn.configStr))
-	ticker := time.NewTicker(time.Second)
+	ticker := time.NewTicker(time.Millisecond)
 
 	defer ticker.Stop()
 	for {
