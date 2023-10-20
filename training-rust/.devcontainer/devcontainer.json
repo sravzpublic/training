@@ -1,0 +1,11 @@
+//devcontainer.json
+{
+    "name": "training-rust",
+    "dockerComposeFile": "../../docker-compose.yaml",
+    "service": "training-rust",
+    "workspaceFolder": "/workspace/training-rust",
+    "shutdownAction": "none",
+    "customizations": {"vscode": {"extensions": [
+      "rust-lang.rust-analyzer"
+    ]}}
+}

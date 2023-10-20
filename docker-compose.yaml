@@ -71,14 +71,60 @@ services:
       - .env
     environment:
       - NODE_ENV=vagrant
-      - NSQ_HOST=nsqd-1:4150,nsqd-2:4150,nsqd-3:4150
-      - NSQ_LOOKUPD_HOST=nsqlookupd-1:4161,nsqlookupd-2:4161,nsqlookupd-3:4161
+      - NSQ_HOST=nsqd-1:4150
+      - NSQ_LOOKUPD_HOST=nsqlookupd-1:4161
       - MONGOLAB_URI=mongodb://sravz:sravz@mongo:27017/sravz
       - MONGOLAB_SRAVZ_HISTORICAL_URI=mongodb://sravz_historical:sravz_historical@mongo:27017/sravz_historical
     volumes:
       - ~/.aws:/home/airflow/.aws:ro
       - ./:/workspace
     restart: always
+
+  training-rust:
+    image: rust
+    working_dir: "/workspace"
+    env_file:
+      - .env
+    tty: true
+    environment:
+      - NODE_ENV=vagrant
+      - NSQ_HOST=nsqd-1:4150
+      - NSQ_LOOKUPD_HOST=nsqlookupd-1:4161
+      - MONGOLAB_URI=mongodb://sravz:sravz@mongo:27017/sravz
+      - MONGOLAB_SRAVZ_HISTORICAL_URI=mongodb://sravz_historical:sravz_historical@mongo:27017/sravz_historical
+    volumes:
+      - ./:/workspace
+    restart: always
+
+  nsqlookupd-1:
+    image: nsqio/nsq
+    ports:
+      - 4160:4160
+      - 4161:4161
+    command: /nsqlookupd
+
+  nsqd-1:
+    image: nsqio/nsq
+    command: >
+      /nsqd
+      -broadcast-address nsqd-1
+      -lookupd-tcp-address=nsqlookupd-1:4160
+    ports:
+      - 4150:4150
+      - 4151:4151
+    depends_on:
+      - nsqlookupd-1
+
+  nsqadmin:
+    image: nsqio/nsq
+    ports:
+      - 4171:4171
+    command: >
+      /nsqadmin
+      -lookupd-http-address=nsqlookupd-1:4161
+    depends_on:
+      - nsqd-1
+      - nsqlookupd-1
 
   redis:
     image: redislabs/redismod
