@@ -6,6 +6,9 @@
     "workspaceFolder": "/workspace/training-rust",
     "shutdownAction": "none",
     "customizations": {"vscode": {"extensions": [
-      "rust-lang.rust-analyzer"
+      "rust-lang.rust-analyzer",
+      "tamasfe.even-better-toml",
+      "zxh404.vscode-proto3",
+      "serayuzgur.crates"
     ]}}
 }

@@ -81,7 +81,7 @@ services:
     restart: always
 
   training-rust:
-    image: rust
+    image: rust:buster
     working_dir: "/workspace"
     env_file:
       - .env
