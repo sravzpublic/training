@@ -8,10 +8,6 @@ publish = false
 name = "server"
 path = "src/main.rs"
 
-[[bin]]
-name = "cli"
-path = "src/cli.rs"
-
 [dependencies]
 tokio-nsq = "0.14.0"
 futures = "0.3"
