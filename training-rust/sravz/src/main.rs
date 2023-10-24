@@ -1,32 +1,34 @@
-use tonic::transport::Server;
-
-use server::StoreInventory;
-use store::inventory_server::InventoryServer;
-
-pub mod server;
-pub mod store;
-
-mod store_proto {
-    include!("store.rs");
-
-    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
-        tonic::include_file_descriptor_set!("store_descriptor");
-}
+use std::collections::HashSet;
+use tokio_nsq::{NSQTopic, NSQChannel, NSQConsumerConfig, NSQConsumerConfigSources, NSQConsumerLookupConfig};
+use gethostname::gethostname;
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "127.0.0.1:9001".parse()?;
-    let inventory = StoreInventory::default();
-
-    let reflection_service = tonic_reflection::server::Builder::configure()
-        .register_encoded_file_descriptor_set(store_proto::FILE_DESCRIPTOR_SET)
-        .build()
-        .unwrap();
+async fn main() {
+    let topic_name = "training-rust";
+    let topic   = NSQTopic::new(topic_name).unwrap();
+    let channel = NSQChannel::new(gethostname().to_string_lossy().to_string()).unwrap();
     
-    Server::builder()
-        .add_service(InventoryServer::new(inventory))
-        .add_service(reflection_service)
-        .serve(addr)
-        .await?;
-    Ok(())
+    let mut addresses = HashSet::new();
+    addresses.insert("http://nsqlookupd-1:4161".to_string());
+    
+    println!("Listening to nsq topic {} - channel {:?}", topic_name, gethostname());
+
+    let mut consumer = NSQConsumerConfig::new(topic, channel)
+        .set_max_in_flight(15)
+        .set_sources(
+            NSQConsumerConfigSources::Lookup(
+                NSQConsumerLookupConfig::new().set_addresses(addresses)
+            )
+        )
+        .build();
+    
+    loop {
+        let message = consumer.consume_filtered().await.unwrap();
+        
+        let message_body_str = std::str::from_utf8(&message.body).unwrap();
+        println!("message body = {}", message_body_str);
+        
+        message.finish().await;
+    }
+
 }

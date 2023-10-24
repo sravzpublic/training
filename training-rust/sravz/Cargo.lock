@@ -394,6 +394,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "gethostname"
+version = "0.2.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1ebd34e35c46e00bb73e81363248d627782724609fe1b6396f553f68fe3862e"
+dependencies = [
+ "libc",
+ "winapi",
+]
+
+[[package]]
+name = "gethostname"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0176e0459c2e4a1fe232f984bca6890e681076abb9934f6cea7c326f3fc47818"
+dependencies = [
+ "libc",
+ "windows-targets",
+]
+
+[[package]]
 name = "getrandom"
 version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -936,17 +956,10 @@ dependencies = [
 name = "sravz"
 version = "0.1.0"
 dependencies = [
- "anyhow",
- "clap",
  "futures",
- "futures-util",
- "prost",
+ "gethostname 0.4.3",
  "tokio",
- "tokio-stream",
- "tonic",
- "tonic-build",
- "tonic-reflection",
- "uuid",
+ "tokio-nsq",
 ]
 
 [[package]]
@@ -1029,8 +1042,24 @@ version = "0.1.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "397c988d37662c7dda6d2208364a706264bf3d6138b11d436cbac0ad38832842"
 dependencies = [
- "futures-core",
- "pin-project-lite",
+ "anyhow",
+ "async-compression",
+ "backoff",
+ "built",
+ "byteorder",
+ "futures",
+ "futures-util",
+ "gethostname 0.2.3",
+ "hyper",
+ "lazy_static",
+ "log",
+ "matches",
+ "regex",
+ "rustls",
+ "serde",
+ "serde_json",
+ "snap",
+ "thiserror",
  "tokio",
 ]
 
