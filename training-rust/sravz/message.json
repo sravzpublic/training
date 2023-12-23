@@ -17,5 +17,5 @@
     "fun_n" : "get_correlation_analysis_tear_sheet_user_asset",
     "e" : "Error",
     "key" : "8631c843c43d7d746de2b80ca4db2cdc",
-    "exception_message" : "Traceback (most recent call last):\n  File \"/home/airflow/src/services/kafka_helpers/message_contracts.py\", line 381, in get_output_message\n    data = MessageContracts.MESSAGEID_FUNCTION_MAP.get(\n  File \"/home/airflow/.local/lib/python3.8/site-packages/decorator.py\", line 232, in fun\n    return caller(func, *(extras + args), **kw)\n  File \"/home/airflow/src/util/helper.py\", line 187, in save_data_to_contabo\n    args_,kwargs = func(*args, **kwargs)\n  File \"/home/airflow/src/analytics/portfolio.py\", line 361, in get_correlation_analysis_tear_sheet_user_asset\n    df = pe.get_df_from_s3(sravz_id)\n  File \"/home/airflow/src/services/price_queries.py\", line 149, in get_df_from_s3\n    data_df = pd.read_csv(io.BytesIO(historical_price))\nTypeError: a bytes-like object is required, not 'list'\n"
+    "exception_message" : ""
 }

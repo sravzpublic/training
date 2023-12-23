@@ -23,8 +23,8 @@ pub struct Message {
     #[serde(rename = "fun_n")]
     pub fun_n: String,
     pub e: String,
-    // #[serde(with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
-    // pub date: DateTime<Utc>,
+    #[serde(skip, with = "bson::serde_helpers::chrono_datetime_as_bson_datetime")]
+    pub date: DateTime<Utc>,
     pub key: String,
     #[serde(rename = "exception_message")]
     pub exception_message: String,

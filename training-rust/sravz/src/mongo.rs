@@ -1,9 +1,8 @@
 use futures::TryStreamExt;
 use mongodb::Client;
 use mongodb::bson::doc;
-use serde_json;
 
-use crate::models::{Message, PI};
+use crate::models::Message;
 
 pub async fn create(_create: Message, _mdb: &Client){
     let db = _mdb.database("sravz");
