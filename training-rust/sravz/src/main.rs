@@ -3,6 +3,7 @@ mod helper;
 mod mongo;
 mod s3_module;
 use s3_module::S3Module;
+use serde_json::from_slice;
 mod mongo_test;
 use std::collections::HashSet;
 use tokio_nsq::{NSQTopic, NSQChannel, NSQConsumerConfig, NSQConsumerConfigSources, NSQConsumerLookupConfig, NSQProducerConfig};
@@ -11,9 +12,10 @@ use mongodb::Client;
 use tokio;
 use std::error::Error;
 use chrono::{Utc, Duration};
-use crate::{helper::sha256_hash, models::Message};
+use crate::{helper::sha256_hash, models::{Message, HistoricalQuote}};
 use log::{info, error};
 use env_logger::Env;
+use polars::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -46,9 +48,23 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     // Download the uploaded object
     let downloaded_content = s3_module.download_object(bucket_name, object_key).await;
-    info!("Downloaded content: {:?}", String::from_utf8_lossy(&downloaded_content));
+    match s3_module.decompress_gzip(downloaded_content) {
+        Ok(decompressed_data) => {
+            // info!("Decompressed data: {:?}", String::from_utf8_lossy(&decompressed_data[1..1000]));
+            // Deserialize JSON data into a Vec<YourStruct>
+            let vec_data: Vec<HistoricalQuote> = from_slice(&decompressed_data).expect("Failed to deserialize JSON data");
 
+            // Create a polars DataFrame from the Vec<YourStruct>
+            let df: DataFrame = DataFrame::new(vec_data).expect("Failed to create DataFrame");
 
+            // Print the DataFrame
+            println!("{:?}", df);
+        }
+        Err(err) => {
+            info!("Error during decompression: {:?}", err);
+        }
+    }
+    // info!("Downloaded content: {:?}", String::from_utf8_lossy(&downloaded_content));
     // TODO: Wait until a connection is initialized
     // assert_matches!(producer.consume().await.unwrap(), NSQEvent::Healthy());
 

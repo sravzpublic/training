@@ -44,3 +44,29 @@ pub struct Kwargs {
     #[serde(rename = "upload_to_aws")]
     pub upload_to_aws: bool,
 }
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct HistoricalQuote {
+    #[serde(rename = "Date")]
+    pub date: Date,
+    #[serde(rename = "Volume")]
+    pub volume: i64,
+    #[serde(rename = "Open")]
+    pub open: f64,
+    #[serde(rename = "High")]
+    pub high: f64,
+    #[serde(rename = "Low")]
+    pub low: f64,
+    #[serde(rename = "Close")]
+    pub close: f64,
+    #[serde(rename = "AdjustedClose")]
+    pub adjusted_close: f64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Date {
+    #[serde(rename = "_isoformat")]
+    pub isoformat: String,
+}

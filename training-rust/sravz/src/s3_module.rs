@@ -1,7 +1,8 @@
 use rusoto_core::{Region, ByteStream};
 use rusoto_s3::{CreateBucketRequest, DeleteObjectRequest, GetObjectRequest, ListObjectsV2Request, PutObjectRequest, S3, S3Client};
-use std::{io::Read, env};
+use std::{io::{Read, self}, env};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use flate2::read::GzDecoder;
 
 pub struct S3Module {
     client: S3Client,
@@ -60,6 +61,17 @@ impl S3Module {
 
     //     self.client.put_object(put_object_request).await.expect("Failed to upload object");
     // }
+
+    pub fn decompress_gzip(&self, compressed_data: Vec<u8>) -> Result<Vec<u8>, io::Error> {
+        // Create a GzDecoder and feed the compressed data into it
+        let mut decoder = GzDecoder::new(compressed_data.as_slice());
+    
+        // Read the decompressed data into a Vec<u8>
+        let mut decompressed_data = Vec::new();
+        decoder.read_to_end(&mut decompressed_data)?;
+    
+        Ok(decompressed_data)
+    }
 
     pub async fn download_object(&self, bucket_name: &str, object_key: &str) -> Vec<u8> {
         // Download an object from the bucket
