@@ -3,9 +3,8 @@ mod helper;
 mod mongo;
 mod s3_module;
 use s3_module::S3Module;
-use serde_json::from_slice;
 mod mongo_test;
-use std::collections::HashSet;
+use std::{collections::HashSet, io::Cursor};
 use tokio_nsq::{NSQTopic, NSQChannel, NSQConsumerConfig, NSQConsumerConfigSources, NSQConsumerLookupConfig, NSQProducerConfig};
 use gethostname::gethostname;
 use mongodb::Client;
@@ -16,6 +15,7 @@ use crate::{helper::sha256_hash, models::{Message, HistoricalQuote}};
 use log::{info, error};
 use env_logger::Env;
 use polars::prelude::*;
+use chrono::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
@@ -52,12 +52,36 @@ async fn main() -> Result<(), Box<dyn Error>> {
         Ok(decompressed_data) => {
             // info!("Decompressed data: {:?}", String::from_utf8_lossy(&decompressed_data[1..1000]));
             // Deserialize JSON data into a Vec<YourStruct>
-            let vec_data: Vec<HistoricalQuote> = from_slice(&decompressed_data).expect("Failed to deserialize JSON data");
+            // let vec_data: Vec<HistoricalQuote> = from_slice(&decompressed_data).expect("Failed to deserialize JSON data");
 
-            // Create a polars DataFrame from the Vec<YourStruct>
-            let df: DataFrame = DataFrame::new(vec_data).expect("Failed to create DataFrame");
+            // // Create a polars DataFrame from the Vec<YourStruct>
+            // let df: DataFrame = DataFrame::new(vec_data).expect("Failed to create DataFrame");
+            // 3. Create cursor from json 
+            let cursor = Cursor::new(decompressed_data);
 
+            // 4. Create polars DataFrame from reading cursor as json
+            let df = JsonReader::new(cursor)
+                        .finish()
+                        .unwrap();
             // Print the DataFrame
+            // Flatten the nested "name" column
+            let mut df = df.unnest(["Date"]).unwrap();
+            let df = df.rename("_isoformat", "Date").unwrap();
+            let mut df = df
+            .clone()
+            .lazy()
+            .select([
+                col("Date").dt().to_string("%Y-%m-%dTHH:mm:ss"),
+                col("DateTime").str().to_datetime(
+                    Some(TimeUnit::Microseconds),
+                    None,
+                    StrptimeOptions::default(),
+                    lit("raise"),
+                ),
+            ])
+            .collect()?;
+            let _ = df.drop_in_place("Date");
+            let df = df.rename("DateTime", "Date").unwrap();
             println!("{:?}", df);
         }
         Err(err) => {

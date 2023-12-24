@@ -1,8 +1,11 @@
 use bson::oid::ObjectId;
 use chrono::DateTime;
 use chrono::Utc;
+use polars::series::IntoSeries;
+use polars::series::Series;
+use serde::ser::SerializeStruct;
 use serde_derive::Deserialize;
-use serde_derive::Serialize;
+use serde::{Serialize, Serializer};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -45,7 +48,7 @@ pub struct Kwargs {
     pub upload_to_aws: bool,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct HistoricalQuote {
     #[serde(rename = "Date")]
@@ -70,3 +73,25 @@ pub struct Date {
     #[serde(rename = "_isoformat")]
     pub isoformat: String,
 }
+
+impl Serialize for HistoricalQuote {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut state = serializer.serialize_struct("HistoricalQuote", 1)?;
+        state.serialize_field("Date", &self.date.isoformat)?;
+        state.end()
+    }
+}
+
+// Implement IntoSeries for YourStruct
+// unsafe impl IntoSeries for HistoricalQuote {
+//     fn into_series(self) -> Series {
+//         let data_series: Series = self.date.into();
+//         let volume_series: Series = self.volume.into();
+
+//         // Concatenate the Series into a single Series
+//         data_series.concat(&volume_series)
+//     }
+// }

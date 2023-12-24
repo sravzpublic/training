@@ -27,4 +27,5 @@ env_logger = "0.10.1"
 rusoto_core = "0.48.0"
 rusoto_s3 = "0.48.0"
 flate2 = "1.0.28"
-polars = "0.35.4"
+polars = { version = "0.35.4", features = ["strings", "lazy", "temporal", "describe", "json", "parquet", "dtype-datetime", "dtype-date"] }
+lazy_static = "1"
