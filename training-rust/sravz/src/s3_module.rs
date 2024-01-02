@@ -1,7 +1,11 @@
-use rusoto_core::{Region, ByteStream};
-use rusoto_s3::{CreateBucketRequest, DeleteObjectRequest, GetObjectRequest, ListObjectsV2Request, PutObjectRequest, S3, S3Client};
+use rusoto_core::Region;
+use rusoto_s3::{CreateBucketRequest, 
+    DeleteObjectRequest, 
+    GetObjectRequest,
+    ListObjectsV2Request, 
+    S3, S3Client};
 use std::{io::{Read, self}, env};
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::io::AsyncReadExt;
 use flate2::read::GzDecoder;
 
 pub struct S3Module {

@@ -1,19 +1,20 @@
+use std::error::Error;
+
 use bson::oid::ObjectId;
 use chrono::DateTime;
 use chrono::Utc;
-use polars::series::IntoSeries;
-use polars::series::Series;
 use serde::ser::SerializeStruct;
 use serde_derive::Deserialize;
 use serde::{Serialize, Serializer};
+use std::fmt;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Message {
-    #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
-    pub id: Option<ObjectId>,
+    // #[serde(rename = "_id", skip_serializing_if = "Option::is_none")]
+    // pub id: Option<ObjectId>,
     #[serde(rename = "id")]
-    pub id2: f64,
+    pub id: f64,
     #[serde(rename = "p_i")]
     pub p_i: PI,
     #[serde(rename = "t_o")]
@@ -31,6 +32,14 @@ pub struct Message {
     pub key: String,
     #[serde(rename = "exception_message")]
     pub exception_message: String,
+}
+
+impl Error for Message {}
+
+impl fmt::Display for Message {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.exception_message)
+    }
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

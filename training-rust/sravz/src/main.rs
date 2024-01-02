@@ -2,35 +2,38 @@ mod models;
 mod helper;
 mod mongo;
 mod s3_module;
-use s3_module::S3Module;
+mod router;
 mod mongo_test;
-use std::{collections::HashSet, io::Cursor};
-use tokio_nsq::{NSQTopic, NSQChannel, NSQConsumerConfig, NSQConsumerConfigSources, NSQConsumerLookupConfig, NSQProducerConfig};
+mod leveraged_funds;
+use std::collections::HashSet;
+use tokio_nsq::{NSQTopic, 
+    NSQChannel, 
+    NSQConsumerConfig, 
+    NSQConsumerConfigSources, 
+    NSQConsumerLookupConfig, 
+    NSQProducerConfig};
 use gethostname::gethostname;
 use mongodb::Client;
 use tokio;
 use std::error::Error;
 use chrono::{Utc, Duration};
-use crate::{helper::sha256_hash, models::{Message, HistoricalQuote}};
+use crate::{helper::sha256_hash, models::Message, router::Router};
 use log::{info, error};
 use env_logger::Env;
-use polars::prelude::*;
-use chrono::prelude::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
-    let s3_module = S3Module::new();
-    let bucket_name = "sravz-data";
-    let object_key = "historical/etf_us_doo.json";
     let consumer_topic_name = "training-rust";
     let producer_topic_name = "training-node";
-    let consumer_topic   = NSQTopic::new(consumer_topic_name).unwrap();
-    let producer_topic = NSQTopic::new(producer_topic_name).unwrap();
-    let channel = NSQChannel::new(gethostname().to_string_lossy().to_string()).unwrap();
+    let consumer_topic   = NSQTopic::new(consumer_topic_name).expect("Failed to create consumer topic");
+    let producer_topic = NSQTopic::new(producer_topic_name).expect("Failed to create producer topic");
+    let channel = NSQChannel::new(gethostname().to_string_lossy().to_string()).expect("Failed to create NSQ channel");
     let client = Client::with_uri_str("mongodb://sravz:sravz@mongo:27017/sravz").await
     .expect("Unable to connect to MongoDB");  
     let mut addresses = HashSet::new();
+
+
     addresses.insert("http://nsqlookupd-1:4161".to_string());
     
     info!("Listening to nsq topic {} - channel {:?}", consumer_topic_name, gethostname());
@@ -45,87 +48,54 @@ async fn main() -> Result<(), Box<dyn Error>> {
         .build();
     
     let mut producer = NSQProducerConfig::new("nsqd-1:4150").build();
-
-    // Download the uploaded object
-    let downloaded_content = s3_module.download_object(bucket_name, object_key).await;
-    match s3_module.decompress_gzip(downloaded_content) {
-        Ok(decompressed_data) => {
-            // info!("Decompressed data: {:?}", String::from_utf8_lossy(&decompressed_data[1..1000]));
-            // Deserialize JSON data into a Vec<YourStruct>
-            // let vec_data: Vec<HistoricalQuote> = from_slice(&decompressed_data).expect("Failed to deserialize JSON data");
-
-            // // Create a polars DataFrame from the Vec<YourStruct>
-            // let df: DataFrame = DataFrame::new(vec_data).expect("Failed to create DataFrame");
-            // 3. Create cursor from json 
-            let cursor = Cursor::new(decompressed_data);
-
-            // 4. Create polars DataFrame from reading cursor as json
-            let df = JsonReader::new(cursor)
-                        .finish()
-                        .unwrap();
-            // Print the DataFrame
-            // Flatten the nested "name" column
-            let mut df = df.unnest(["Date"]).unwrap();
-            let df = df.rename("_isoformat", "Date").unwrap();
-            let mut df = df
-            .clone()
-            .lazy()
-            .select([
-                col("Date").dt().to_string("%Y-%m-%dTHH:mm:ss"),
-                col("DateTime").str().to_datetime(
-                    Some(TimeUnit::Microseconds),
-                    None,
-                    StrptimeOptions::default(),
-                    lit("raise"),
-                ),
-            ])
-            .collect()?;
-            let _ = df.drop_in_place("Date");
-            let df = df.rename("DateTime", "Date").unwrap();
-            println!("{:?}", df);
-        }
-        Err(err) => {
-            info!("Error during decompression: {:?}", err);
-        }
-    }
-    // info!("Downloaded content: {:?}", String::from_utf8_lossy(&downloaded_content));
-    // TODO: Wait until a connection is initialized
-    // assert_matches!(producer.consume().await.unwrap(), NSQEvent::Healthy());
-
+    let router = Router::new();
     loop {
-        let message = consumer.consume_filtered().await.unwrap();
-        let message_body_str = std::str::from_utf8(&message.body).unwrap();        
-        let hashed_string = sha256_hash(message_body_str);
+        let message = consumer.consume_filtered().await.expect("Failed to consume NSQ message");
+        let message_body_str = std::str::from_utf8(&message.body).expect("Failed to get JSON string from NSQ Message");        
+        let hashed_string = &sha256_hash(message_body_str);
         info!("Message received on NSQ = {} - SHA-256 = {}", message_body_str, hashed_string);
-        let messages = mongo::find_by_key(hashed_string, &client).await.expect("Document not found");  
+        let messages = mongo::find_by_key(hashed_string.to_string(), &client).await.expect("Document not found");  
          
         /* If the message exists and inserted less than 24 hours back - resend the same message else reprocess the message */
         if  messages.len() > 0 && messages[0].date + Duration::days(1) < Utc::now() {
-            let message = &serde_json::to_string(&messages[0]).unwrap();
+            let message = &serde_json::to_string(&messages[0]).expect("Failed to convert NSQ message to JSON string");
             info!("Sending the existing message in mongodb {}", message);
-            producer.publish(&producer_topic, message.as_bytes().to_vec()).await.unwrap();
+            producer.publish(&producer_topic, message.as_bytes().to_vec()).await.expect("Failed to publish NSQ message");
         } else {
-            info!("Processing the message");
+            info!("Processing the message...");
             let result: Result<Message, serde_json::Error> = serde_json::from_str(message_body_str);        
             // Handle the result using pattern matching
             match result {
                 Ok(mut _message) => {
-                    let hashed_string: String = sha256_hash(message_body_str);
-                    _message.date = Utc::now();
-                    _message.key = hashed_string;
-                    mongo::create(_message, &client).await;
+                    let router_result = router.process_message(_message).await;
+                    match router_result {
+                        Ok(mut processed_message) => {
+                            // let hashed_string: String = sha256_hash(message_body_str);
+                            processed_message.date = Utc::now();
+                            processed_message.key = hashed_string.to_string();
+                            mongo::create(processed_message.clone(), &client).await;
+                            let message_body_str = &serde_json::to_string(&processed_message).expect("Failed to convert message to JSON string");
+                            info!("Sending the processed message on NSQ {}", message_body_str);
+                            producer.publish(&producer_topic, message_body_str.as_bytes().to_vec()).await.expect("Failed to publish NSQ message"); 
+                            continue;
+                        }
+                        Err(err) => {
+                            error!("Router message processing error: {}", err);
+                            //message_body_str = &serde_json::to_string(*err).expect("Failed to convert message to JSON string");
+                        }
+                    }
                 }
                 Err(err) => {
                     error!("Deserialization failed: {}", err);
                 }
             }   
-            info!("Sending the processed message on NSQ {}", message_body_str);
-            producer.publish(&producer_topic, message_body_str.as_bytes().to_vec()).await.unwrap(); 
+            info!("Unable to process message {}", message_body_str);
+            producer.publish(&producer_topic, message_body_str.as_bytes().to_vec()).await.expect("Failed to publish NSQ message"); 
         }
         // TODO: Wait until the message is acknowledged by NSQ
         // assert_matches!(producer.consume().await.unwrap(), NSQEvent::Ok());
-        producer.consume().await.unwrap();
-        message.finish().await;
+        // producer.consume().await.expect("Failed to consume NSQ message");
+        // message.finish().await;
     }
 
     // Ok(())
