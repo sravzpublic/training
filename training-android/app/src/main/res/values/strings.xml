@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Sravz</string>
+    <string name="admobAppId">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="admobBannerId">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admobInterstitialId">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="universalLink">myapp</string>
+
+    <string name="unable_to_open_file">Unable to open file</string>
+    <string name="downloading">Downloading File...</string>
+    <string name="browser">Browse</string>
+    <string name="source">Select File From</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="no_internet">No internet connection.\nPlease connect and try again</string>
+    <string name="rate_title">Do you like our app?</string>
+    <string name="rate_msg">If so, please take a moment to rate our app.</string>
+    <string name="rate_now">RATE NOW</string>
+    <string name="no_thanks">NO THANKS</string>
+    <string name="maybe_later">MAYBE LATER</string>
+</resources>
