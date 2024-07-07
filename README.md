@@ -10,7 +10,7 @@ Share Research And ViZualize [Sravz](https://sravz.com) is an analytics platform
 [Install Visual studio code insider version](https://code.visualstudio.com/insiders/)
 VS Code insider verion support jupyter notebooks
 
-### Start srarvz training docker container
+### Start sravz training docker container
 ```bash
 # Run make to see the list of available commands
 $ make
