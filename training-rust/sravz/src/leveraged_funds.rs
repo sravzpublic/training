@@ -18,7 +18,7 @@ impl LeveragedFunds {
 
     pub async fn leverage_funds_nasdaq100(&self, message: Message) -> Result<Message, Box<dyn Error>>  {
         let bucket_name = "sravz-data";
-        let object_key = "historical/etf_us_doo.json";
+        let object_key = "historical/etf_us_qqq.json";
         // Download the uploaded object
         let downloaded_content = self.s3_module.download_object(bucket_name, object_key).await;
         match self.s3_module.decompress_gzip(downloaded_content) {

@@ -3,12 +3,14 @@
     "name": "training-rust",
     "dockerComposeFile": "../../docker-compose.yaml",
     "service": "training-rust",
-    "workspaceFolder": "/workspace/training-rust",
+    "workspaceFolder": "/workspace/training-rust/sravz",
     "shutdownAction": "none",
     "customizations": {"vscode": {"extensions": [
       "rust-lang.rust-analyzer",
       "tamasfe.even-better-toml",
       "serayuzgur.crates",
-      "mongodb.mongodb-vscode"
+      "mongodb.mongodb-vscode",
+      "swellaby.rust-pack",
+      ""
     ]}}
 }

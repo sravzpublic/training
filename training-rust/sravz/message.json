@@ -14,7 +14,7 @@
     "cache_message" : true,
     "stopic" : "pca",
     "ts" : 1698155232.5238342,
-    "fun_n" : "get_correlation_analysis_tear_sheet_user_asset",
+    "fun_n" : "leverage_funds_nasdaq100",
     "e" : "Error",
     "key" : "8631c843c43d7d746de2b80ca4db2cdc",
     "exception_message" : ""

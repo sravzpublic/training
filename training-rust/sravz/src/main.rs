@@ -3,7 +3,6 @@ mod helper;
 mod mongo;
 mod s3_module;
 mod router;
-mod mongo_test;
 mod leveraged_funds;
 use std::collections::HashSet;
 use tokio_nsq::{NSQTopic, 
@@ -57,7 +56,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
         let messages = mongo::find_by_key(hashed_string.to_string(), &client).await.expect("Document not found");  
          
         /* If the message exists and inserted less than 24 hours back - resend the same message else reprocess the message */
-        if  messages.len() > 0 && messages[0].date + Duration::days(1) < Utc::now() {
+        if  messages.len() > 0 && messages[0].date + Duration::days(1) > Utc::now() {
             let message = &serde_json::to_string(&messages[0]).expect("Failed to convert NSQ message to JSON string");
             info!("Sending the existing message in mongodb {}", message);
             producer.publish(&producer_topic, message.as_bytes().to_vec()).await.expect("Failed to publish NSQ message");
